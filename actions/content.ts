@@ -1,7 +1,7 @@
 'use server'
 
-import { cookies } from "next/headers"
 import { log } from "../utils/util"
+import { authHeaders } from "./common"
 
 const BaseUrl = process.env.NEXT_PUBLIC_SERVICE_BASE_URL
 
@@ -36,29 +36,6 @@ export const verify = async (p: object) => {
     const data = await res.json()
     const token = data.data.token
     return token
-}
-
-export const getToken = async () => {
-    const c = cookies().get('token')
-    if (c) {
-        return c.value
-    }
-    return undefined
-}
-
-export const setToken = async (token: string) => {
-    cookies().set('token', token)
-}
-
-export const removeToken = async () => {
-    cookies().delete('token')
-}
-
-export const authHeaders = async () => {
-    const token = await getToken()
-    return {
-        'Authorization': token,
-    }
 }
 
 export const fetchContentList = async () => {

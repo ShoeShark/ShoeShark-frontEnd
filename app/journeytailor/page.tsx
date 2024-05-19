@@ -3,7 +3,7 @@
 import { log } from "utils/util"
 import CreateForm from "./Create"
 import Result from "./Result"
-import { fetchAIPlan } from "lib/actions"
+import { fetchAIPlan } from "actions/content"
 
 export interface IAIResponse {
     city: string,

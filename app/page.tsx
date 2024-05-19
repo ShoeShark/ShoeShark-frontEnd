@@ -1,5 +1,5 @@
 import { BasciConnect } from "components/ConnectWallet";
-import { getToken } from "lib/actions";
+import { getToken } from "actions/token";
 import { log } from "utils/util";
 import type { NextPage } from "next";
 import Head from "next/head";
