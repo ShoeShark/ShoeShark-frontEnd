@@ -1,7 +1,7 @@
 'use server'
 
 import { cookies } from "next/headers"
-import { log } from "./util"
+import { log } from "../utils/util"
 
 const BaseUrl = process.env.NEXT_PUBLIC_SERVICE_BASE_URL
 

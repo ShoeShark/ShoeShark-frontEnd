@@ -6,7 +6,7 @@ import { RainbowKitProvider, darkTheme, createAuthenticationAdapter, RainbowKitA
 import { WagmiProvider } from "wagmi";
 
 import { ReactNode } from "react";
-import { log } from "lib/util";
+import { log } from "utils/util";
 import { avalancheFuji } from "viem/chains";
 import { wagmiConfig } from "utils/config";
 import { walletClient } from "config";

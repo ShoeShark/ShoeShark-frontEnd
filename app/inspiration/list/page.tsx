@@ -1,5 +1,5 @@
 import { Filter } from "./Filter";
-import { log } from "lib/util";
+import { log } from "utils/util";
 
 export default async function InspirationListPage() {
 

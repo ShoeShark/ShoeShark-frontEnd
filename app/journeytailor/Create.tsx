@@ -1,7 +1,7 @@
 'use client'
 
 import { CalendarDate, DateRangePicker, RangeValue } from "@nextui-org/react";
-import { log } from "lib/util";
+import { log } from "utils/util";
 import { useRouter } from "next/navigation";
 import { FormEvent } from "react";
 import WindowedSelect from "react-windowed-select";

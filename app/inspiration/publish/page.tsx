@@ -4,7 +4,7 @@ import "@blocknote/core/fonts/inter.css";
 import "@blocknote/mantine/style.css";
 import { BlockNoteView } from "@blocknote/mantine";
 import { useCreateBlockNote } from "@blocknote/react";
-import { log } from "lib/util";
+import { log } from "utils/util";
 import { useState } from "react";
 
 const initialContent = []
