@@ -1,10 +1,37 @@
 'use client'
 
 import { useRouter, useSearchParams } from "next/navigation"
+import { useEffect, useState } from "react";
+import WindowedSelect from "react-windowed-select";
+
+interface ISelectOption {
+    value: string;
+    label: string;
+}
 
 export function Filter() {
     const searchParams = useSearchParams()
     const router = useRouter()
+
+    const [location, setLocation] = useState('')
+    const [title, setTitle] = useState('')
+    const [cityList, setCityList] = useState<ISelectOption[]>([])
+
+    useEffect(() => {
+        fetchCityList()
+    }, [])
+
+    const fetchCityList = async () => {
+        const res = await fetch('/city.json')
+        const data = await res.json()
+        const formatData: ISelectOption[] = data.map((item: string) => {
+            return {
+                value: item,
+                label: item
+            }
+        })
+        setCityList(formatData)
+    }
 
     const handleFilter = () => {
 
@@ -15,8 +42,7 @@ export function Filter() {
             <div>
                 <p className="font-bold my-2">Sort By</p>
                 <select className="select select-bordered w-full select-sm">
-                    <option disabled selected>Who shot first?</option>
-                    <option>Han Solo</option>
+                    <option>Who shot first?</option>
                 </select>
             </div>
 
@@ -33,9 +59,16 @@ export function Filter() {
                 </select>
             </div>
 
+            <WindowedSelect
+                required
+                placeholder="location"
+                name="city"
+                onChange={(item: ISelectOption) => setLocation(item.value)}
+                options={cityList}
+                windowThreshold={0}
+            />
 
-
-            <button className="btn bg-base-content text-base-100 mt-2">Filter</button>
+            <button onClick={() => handleFilter()} className="btn bg-base-content text-base-100 mt-2">Filter</button>
         </div>
     </div>
 }

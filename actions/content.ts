@@ -46,3 +46,17 @@ export const fetchContentList = async () => {
     const data = await res.json()
     return data
 }
+
+export const contentSave = async (body: BodyInit) => {
+    // const b = JSON.stringify(body)
+    const headers = await authHeaders()
+    headers.append('Content-type', 'application/json')
+    const res = await fetch(`${BaseUrl}/content/save`, {
+        headers,
+        method: 'POST',
+        body,
+        redirect: 'follow',
+    })
+    const data = await res.json()
+    return data
+}
