@@ -1,18 +1,17 @@
 "use client";
 import { Tabs, Tab } from "@nextui-org/react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
 export default function TokenZoneLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
-    const router = useRouter();
+    const path = usePathname();
 
-    const handleTabChange = (path: string) => {
-        router.push(path);
-    };
     return (
-        <div className="relative flex h-[calc(100vh-80px)]">
+        <div className="relative flex h-[calc(100vh-5rem)] z-9">
             <div className="w-120 pt-8 bg-white">
                 <Tabs
                     aria-label="Options"
@@ -21,22 +20,52 @@ export default function TokenZoneLayout({
                         base: "justify-center",
                         tabList: "bg-white text-bold p-3",
                         cursor: "bg-[#F31260]",
-                        tabContent: "font-bold",
+                        tabContent: "font-bold w-full",
                     }}
-                    onSelectionChange={handleTabChange}
+                    selectedKey={path}
                     isVertical={true}
                     variant="underlined"
                 >
-                    <Tab key="/personalCenter" title="My Assets" />
+                    <Tab
+                        key="/personalCenter/myAssets"
+                        title={
+                            <Link
+                                href="/personalCenter/myAssets"
+                                className="flex items-center justify-start"
+                            >
+                                <span className="icon-[ic--baseline-art-track] mr-1 text-2xl"></span>
+                                My Assets
+                            </Link>
+                        }
+                    />
                     <Tab
                         key="/personalCenter/myInspiration"
-                        title="My Inspiration"
+                        title={
+                            <Link
+                                href="/personalCenter/myInspiration"
+                                className="flex items-center justify-start"
+                            >
+                                <span className="icon-[ic--baseline-wallet] mr-1 text-2xl text-black"></span>
+                                My Inspiration
+                            </Link>
+                        }
                     />
-                    <Tab key="/personalCenter/myPoints" title="My Points" />
+                    <Tab
+                        key="/personalCenter/myPoints"
+                        title={
+                            <Link
+                                href="/personalCenter/myPoints"
+                                className="flex items-center justify-start"
+                            >
+                                <span className="icon-[ic--outline-auto-awesome] mr-1 text-2xl text-black"></span>
+                                My Points
+                            </Link>
+                        }
+                    />
                 </Tabs>
             </div>
             <div className="md:px-12 md:py-8 w-full bg-[#F1F1F1]">
-                <div className="bg-white rounded-lg h-full shadow-[0_0px_20px_#00000010]">
+                <div className="bg-white rounded-lg h-full overflow-hidden shadow-[0_0px_20px_#00000010]">
                     {children}
                 </div>
             </div>

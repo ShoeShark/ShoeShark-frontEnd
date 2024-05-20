@@ -2,7 +2,7 @@
 
 import { NextUIProvider } from "@nextui-org/react";
 import Layout from "components/Layout";
-import { RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
+import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { WagmiProvider } from "wagmi";
 
 import { ReactNode } from "react";
@@ -25,7 +25,6 @@ export default function AppProvider({ children }: { children: ReactNode }) {
                 <QueryClientProvider client={queryClient}>
                     <AuthProvider>
                         <RainbowKitProvider
-                            theme={darkTheme()}
                             initialChain={avalancheFuji}>
                             <Layout>
                                 {children}
