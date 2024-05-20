@@ -1,20 +1,30 @@
 'use client'
 
+import clsx from "clsx";
 import { useRouter, useSearchParams } from "next/navigation"
+import nProgress from "nprogress";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import WindowedSelect from "react-windowed-select";
+import { useAccount } from "wagmi";
 
 interface ISelectOption {
     value: string;
     label: string;
 }
 
-export function Filter() {
-    const searchParams = useSearchParams()
-    const router = useRouter()
+export function Filter({
+    loading,
+    onFilter,
+}: {
+    loading: boolean;
+    onFilter: Function,
+}) {
+    const { address } = useAccount()
 
     const [location, setLocation] = useState('')
     const [title, setTitle] = useState('')
+    const [description, setDescription] = useState('')
     const [cityList, setCityList] = useState<ISelectOption[]>([])
 
     useEffect(() => {
@@ -34,41 +44,63 @@ export function Filter() {
     }
 
     const handleFilter = () => {
-
+        const p = {
+            account_address: address,
+            title: title,
+            description,
+        }
+        onFilter(p)
     }
 
-    return <div className="self-start w-[200px] card bg-base-100 shadow-xl">
+    return <div className="self-start w-[240px] card bg-base-100 shadow-xl">
         <div className="card-body">
-            <div>
+            {/* <div>
                 <p className="font-bold my-2">Sort By</p>
                 <select className="select select-bordered w-full select-sm">
-                    <option>Who shot first?</option>
+                    <option value={123}>Who shot first?</option>
                 </select>
+            </div> */}
+
+            <div>
+                <p className="font-bold my-2">Title</p>
+                <input
+                    onChange={e => setTitle(e.target.value)}
+                    type="text"
+                    className="input input-bordered w-full input-sm"
+                />
+            </div>
+
+            <div>
+                <p className="font-bold my-2">Description</p>
+                <input
+                    onChange={e => setDescription(e.target.value)}
+                    type="text"
+                    className="input input-bordered w-full input-sm"
+                />
             </div>
 
             <div>
                 <p className="font-bold my-2">Destination</p>
-                <input type="text" placeholder="Type here" className="input input-bordered w-full input-sm" />
+                <WindowedSelect
+                    required
+                    placeholder="location"
+                    name="city"
+                    onChange={(item: ISelectOption) => setLocation(item.value)}
+                    options={cityList}
+                    windowThreshold={0}
+                />
             </div>
 
-            <div>
-                <p className="font-bold my-2">Duration</p>
-                <select className="select select-bordered w-full select-sm">
-                    <option disabled selected>Who shot first?</option>
-                    <option>Han Solo</option>
-                </select>
-            </div>
 
-            <WindowedSelect
-                required
-                placeholder="location"
-                name="city"
-                onChange={(item: ISelectOption) => setLocation(item.value)}
-                options={cityList}
-                windowThreshold={0}
-            />
-
-            <button onClick={() => handleFilter()} className="btn bg-base-content text-base-100 mt-2">Filter</button>
+            <button
+                disabled={loading}
+                onClick={() => handleFilter()}
+                className="btn bg-base-content text-base-100 mt-2"
+            >
+                <span className={clsx({
+                    loading,
+                })}>Filter</span>
+            </button>
         </div>
     </div>
 }
