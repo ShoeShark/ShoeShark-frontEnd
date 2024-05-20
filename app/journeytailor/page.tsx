@@ -24,10 +24,8 @@ export default function JourneyTailor() {
             const [k, v] = item
             f.append(k, v as any)
         })
-        log('f', f)
         // return
         const data = await fetchAIPlan(f)
-        log('dd', data)
         // setComponentIndex(1)
     }
 

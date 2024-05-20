@@ -3,6 +3,7 @@ import { AuthenticationStatus, RainbowKitAuthenticationProvider, createAuthentic
 import { fetchNonce, verify } from 'actions/content';
 import { getToken, removeToken, setToken } from 'actions/token';
 import React from 'react';
+import toast from 'react-hot-toast';
 import { log } from 'utils/util';
 import { useAccount, useDisconnect } from 'wagmi';
 
@@ -11,12 +12,11 @@ import { useAccount, useDisconnect } from 'wagmi';
 export const AuthProvider = ({ children }) => {
     const [authStatus, setAuthStatus] = useState<AuthenticationStatus>('unauthenticated')
     const { address } = useAccount()
-    const {disconnect} = useDisconnect()
+    const { disconnect } = useDisconnect()
 
     useEffect(() => {
         init()
-        log('addre', address)
-    }, [address])
+    }, [])
 
     const init = async () => {
         const token = await getToken()
@@ -55,6 +55,7 @@ export const AuthProvider = ({ children }) => {
                 removeToken()
                 setAuthStatus('unauthenticated')
                 disconnect()
+                toast.error('Verify failed')
             }
             return verified
         },

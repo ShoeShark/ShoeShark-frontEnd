@@ -38,9 +38,19 @@ export const verify = async (p: object) => {
     return token
 }
 
-export const fetchContentList = async () => {
+export const contentList = async (p) => {
+    
     const header = await authHeaders()
     const res = await fetch(`${BaseUrl}/content/list`, {
+        headers: header,
+    })
+    const data = await res.json()
+    return data
+}
+
+export const contentDetail = async (id: number | string) => {
+    const header = await authHeaders()
+    const res = await fetch(`${BaseUrl}/content/${id}`, {
         headers: header,
     })
     const data = await res.json()
