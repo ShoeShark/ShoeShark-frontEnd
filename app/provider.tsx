@@ -23,14 +23,14 @@ export default function AppProvider({ children }: { children: ReactNode }) {
         <NextUIProvider>
             <WagmiProvider config={wagmiConfig}>
                 <QueryClientProvider client={queryClient}>
-                    <AuthProvider>
-                        <RainbowKitProvider
-                            initialChain={avalancheFuji}>
-                            <Layout>
-                                {children}
-                            </Layout>
-                        </RainbowKitProvider>
-                    </AuthProvider>
+                    {/* <AuthProvider> */}
+                    <RainbowKitProvider
+                        initialChain={avalancheFuji}>
+                        <Layout>
+                            {children}
+                        </Layout>
+                    </RainbowKitProvider>
+                    {/* </AuthProvider> */}
                 </QueryClientProvider>
             </WagmiProvider>
         </NextUIProvider >
