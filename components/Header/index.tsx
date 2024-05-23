@@ -2,6 +2,7 @@ import React from "react";
 import { BasciConnect } from "components/ConnectWallet";
 import Link from "next/link";
 import LogoSVG from "components/Icons/Logo";
+import Nav from "./Nav";
 
 const Header = () => {
     return (
@@ -31,11 +32,7 @@ const Header = () => {
                 </Link>
             </div>
             <div className="navbar-center hidden lg:flex">
-                <div role="tablist" className="tabs">
-                    <Link className="tab tab-active cursor-pointer" href="/inspiration/list">Travel Inspiration Plaza</Link>
-                    <Link className="tab cursor-pointer" href="/journeytailor">Journey Tailor</Link>
-                    <Link className="tab cursor-pointer" href="/tokenZone">Token Zone</Link>
-                </div>
+                <Nav />
             </div>
             <div className="navbar-end">
                 <BasciConnect></BasciConnect>
