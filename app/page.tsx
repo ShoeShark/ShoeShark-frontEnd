@@ -1,21 +1,15 @@
 import { BasciConnect } from "components/ConnectWallet";
 import { getToken } from "actions/token";
 import { log } from "utils/util";
-import type { NextPage } from "next";
-import Head from "next/head";
+import FullPage from 'components/FullPage'
 
 const Home = async () => {
     const token = await getToken()
     log('token is', token)
 
-    return (
-        <div>
-            123
-            {/* 中间内容写在这里 */}
-            {token}
-        </div>
-    );
+    return <div className="relative flex flex-col h-screen">
+        <FullPage />
+    </div>
 };
 
 export default Home;
-

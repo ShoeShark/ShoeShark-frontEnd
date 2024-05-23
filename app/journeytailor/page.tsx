@@ -9,12 +9,21 @@ export interface IAIResponse {
     city: string,
     execution_time: number,
     suggestion: {
-        [date: string]: string
+        [date: string]: {
+            [sort: string]: {
+                [place: string]: {
+                    distance?: string;
+                    duration_m?: string;
+                    text: string;
+                    costtime?: string;
+                }
+            }
+        }
     }
 }
 
 export default function JourneyTailor() {
-    const [componentIndex, setComponentIndex] = useState(0)
+    const [componentIndex, setComponentIndex] = useState(1)
     const [result, setResult] = useState<IAIResponse>()
 
     const handleGenerate = async (props: any) => {
