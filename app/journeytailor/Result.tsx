@@ -3,6 +3,15 @@
 import clsx from 'clsx'
 import { IAIResponse } from "./page";
 
+interface IActivity {
+    order: string;
+    place: string;
+    distance?: string;
+    duration_m?: string;
+    text: string;
+    costtime?: string;
+}
+
 export default function Result({ result }: {
     result: IAIResponse
 }) {
@@ -10,13 +19,55 @@ export default function Result({ result }: {
         "city": "厦门市",
         "execution_time": 11.173502206802368,
         "suggestion": {
-            "2024-06-10": "推荐您前往鼓浪屿，可以体验爬山的乐趣，同时品尝当地特色美食，预算3000元可以在岛上找到不错的食宿选择。",
-            "2024-06-11": "建议您前往环岛路进行徒步爬山，沿途可以品尝到各种美食，预算3000元可以享受到岛上的特色美食和风景。",
-            "2024-06-12": "推荐您前往日光岩，可以体验爬山的乐趣，同时在岛上尝试各种特色美食，预算3000元可以满足您的需求。",
-            "2024-06-13": "建议您参加厦门市的美食文化节活动，可以尝试到各种特色美食，同时可以在市区附近进行轻松的爬山活动。",
-            "2024-06-14": "推荐您前往海边进行散步，欣赏美丽的海景，然后到市区尝试各种美食，预算3000元可以在厦门市享受到美食和自然风光。"
+            "2024-05-15": {
+                "1": {
+                    "北京方恒假日酒店": {
+                        "distance": "0.20",
+                        "duration_m": "1",
+                        "text": "居住位置"
+                    }
+                },
+                "2": {
+                    "苏山": {
+                        "costtime": "3",
+                        "distance": "0.20",
+                        "duration_m": "1",
+                        "text": "苏山是苏州的标志性山脉，您可以在这里爬山锻炼身体，欣赏苏州的美景。建议您在山脚下尝试当地特色美食，预计活动费用为200元，建议游玩时间为3小时。"
+                    }
+                },
+                "3": {
+                    "平江路美食街": {
+                        "costtime": "2",
+                        "text": "平江路美食街是苏州著名的美食街区，您可以品尝到各种当地特色美食。建议您在这里尝试特色小吃，预计活动费用为150元，建议游玩时间为2小时。"
+                    }
+                }
+            },
+            "2024-05-16": {
+                "1": {
+                    "北京方恒假日酒店1": {
+                        "distance": "0.20",
+                        "duration_m": "1",
+                        "text": "居住位置"
+                    }
+                },
+                "2": {
+                    "苏山": {
+                        "costtime": "3",
+                        "distance": "0.20",
+                        "duration_m": "1",
+                        "text": "苏山是苏州的标志性山脉，您可以在这里爬山锻炼身体，欣赏苏州的美景。建议您在山脚下尝试当地特色美食，预计活动费用为200元，建议游玩时间为3小时。"
+                    }
+                },
+                "3": {
+                    "平江路美食街": {
+                        "costtime": "2",
+                        "text": "平江路美食街是苏州著名的美食街区，您可以品尝到各种当地特色美食。建议您在这里尝试特色小吃，预计活动费用为150元，建议游玩时间为2小时。"
+                    }
+                }
+            },
         }
     }
+
     const formatDateByType = (date: string, type: string) => {
         const str = new Date(date).toDateString()
         const [week, month, day, year] = str.split(' ')
@@ -28,32 +79,37 @@ export default function Result({ result }: {
         }
         return date
     }
-    const suggestionsByData = (res: IAIResponse) => {
-        return Object.entries(res.suggestion).map(([key, value]) => ({
-            date: key,
-            text: value,
-        }))
-    }
-    const suggestions = suggestionsByData(res)
+
+    const suggestionArray = Object.entries(res.suggestion).map(([date, activities]) => {
+        return {
+            date,
+            activities: Object.entries(activities).map(([order, details]) => {
+                const [place, info] = Object.entries(details)[0];
+                return { order, place, ...info };
+            })
+        };
+    });
 
     const [selected, setSelected] = useState<number>(0)
-    const [content, setContent] = useState<string>(suggestions.length > 0 ? suggestions[0].text : "")
+    const [activities, setActivities] = useState<IActivity[]>(suggestionArray.length > 0 ? suggestionArray[0].activities : [])
 
     const onSelect = (index: number) => {
         setSelected(index)
-        setContent(suggestions[index].text)
+        const s = suggestionArray[index].activities
+        setActivities(s)
     }
 
-    return <div className="flex items-start px-24 pt-12">
-        <section className="w-2/5 flex items-center justify-around">
-            <ul className="list-none w-2/3">
+    return <div className="flex items-start px-48 pt-12">
+        {/* left */}
+        <section className="w-[640px] flex items-center justify-around">
+            <ul className="list-none w-full">
                 {
-                    suggestions.map((suggestion, index) => {
+                    suggestionArray.map((suggestion, index) => {
                         return <li
                             key={suggestion.date}
                             onClick={() => onSelect(index)}
                             className={clsx([
-                                'flex justify-between items-center rounded-btn py-2 px-4 mb-2 cursor-pointer',
+                                'flex justify-between items-center rounded-btn py-2 px-4 mb-4 cursor-pointer',
                                 index === selected ? 'ring-2' : 'border border-gray-300',
                             ])}
                         >
@@ -66,13 +122,37 @@ export default function Result({ result }: {
                     })
                 }
             </ul>
-            <span className="icon-[ic--round-double-arrow] text-6xl"></span>
+            <div className="icon-[ic--round-double-arrow] mx-12 text-6xl text-gray-400"></div>
         </section>
 
-        <div className="card w-3/5 shadow-xl">
-            <div className="card-body">
-                {content}
-            </div>
-        </div>
+        {/* right */}
+        <section>
+            {
+                activities.map((activity: IActivity) => {
+                    return <div className='text-gray-500 w-full' key={activity.order}>
+                        {/* card content */}
+                        <div className="border border-gray-300 w-full bg-gray-50 rounded-lg p-4">
+                            <div className='text-lg font-bold mb-2'>{activity.place}</div>
+                            <div>{activity.text}</div>
+                            {
+                                Number(activity.costtime) > 0 && <div className='pt-2'>
+                                    <div className='badge'>{activity.costtime}h</div>
+                                </div>
+                            }
+                        </div>
+
+                        {/* divider content */}
+                        {
+                            Number(activity.duration_m) > 0 && <div className='flex items-center'>
+                                <div className='border-r border-1 border-gray-300 ml-12 h-[80px] w-0'></div>
+                                <div className="icon-[ic--sharp-directions-bus] text-2xl mx-2 text-gray-500"></div>
+                                <div className='text-lg'>{activity.duration_m}h</div>
+                            </div>
+                        }
+                    </div>
+                })
+            }
+        </section>
+
     </div>
 }
