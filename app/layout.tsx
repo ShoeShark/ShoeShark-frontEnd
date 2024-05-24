@@ -16,11 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <body
                 className={urban.className}
             >
-                <div
-                    className={"h-full rounded-lg relative"}
-                >
-                    <Provider>{children}</Provider>
-                </div>
+                <Provider>{children}</Provider>
             </body>
         </html>
     );

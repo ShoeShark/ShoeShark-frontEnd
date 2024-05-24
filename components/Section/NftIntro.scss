@@ -1,0 +1,50 @@
+.section-nftIntro {
+    height: 100vh;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+    width: 100%;
+    overflow-x: hidden;
+
+    &-text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+    }
+
+    .gallery-container {
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+    }
+
+    .gallery {
+        position: relative;
+        z-index: 1;
+        height: 50vh;
+        white-space: nowrap;
+        display: block;
+        padding-left: 20rem;
+
+        &-box {
+            height: 50vh;
+            width: 22rem;
+            margin: 0 80px;
+            display: inline-block;
+            border-radius: 12px;
+            overflow: hidden;
+
+            img {
+
+                object-fit: cover;
+                height: 100%;
+                width: 100%;
+            }
+        }
+    }
+}
