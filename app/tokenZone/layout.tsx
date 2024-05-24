@@ -1,12 +1,19 @@
 "use client"
 import { Tabs, Tab } from "@nextui-org/react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 export default function TokenZoneLayout({ children }: { children: React.ReactNode }) {
-    const router = useRouter()
+    const path = usePathname();
+
+    const defaultVal = path == "/tokenZone" || path == "/tokenZone/tokenSwap" ? "/tokenZone" : "/tokenZone/nftMarket";
+    const [value, setValue] = useState(defaultVal);
 
     const handleTabChange = (path: string) => {
-        router.push(path)
+        if (path !== value) {
+            setValue(path)
+        }
     };
+
     return <div className="relative">
         <Tabs
             aria-label="Options"
@@ -17,10 +24,27 @@ export default function TokenZoneLayout({ children }: { children: React.ReactNod
                 cursor: 'bg-[#F2F2F2]',
                 tabContent: 'font-bold'
             }}
+            selectedKey={value}
             onSelectionChange={handleTabChange}
         >
-            <Tab key="/tokenZone" title="Token Swap" />
-            <Tab key="/tokenZone/nftMarket" title="NFT Market" />
+            <Tab
+                key="/tokenZone/tokenSwap"
+                title={
+                    <Link
+                        href="/tokenZone/tokenSwap"
+                    >
+                        Token Swap
+                    </Link>
+                } />
+            <Tab
+                key="/tokenZone/nftMarket"
+                title={
+                    <Link
+                        href="/tokenZone/nftMarket"
+                    >
+                        NFT Market
+                    </Link>
+                } />
         </Tabs>
         {children}
     </div>
