@@ -5,12 +5,12 @@ import { fetchWithAuth, log } from "../utils/util"
 const BaseUrl = process.env.NEXT_PUBLIC_SERVICE_BASE_URL
 
 export const fetchAIPlan = async (formData) => {
-    let a = `${process.env.NEXT_PUBLIC_TRAVEL_ASSISTANT_BASE_URL}/get_data`
     let result
     try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_TRAVEL_ASSISTANT_BASE_URL}/get_data`, {
             method: 'POST',
             body: formData,
+            redirect: 'follow',
         })
         const data = await res.json()
         result = data

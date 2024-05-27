@@ -132,7 +132,7 @@ export default function CreateForm({
             <button
                 disabled={btnDisabled()}
                 type="submit"
-                className="btn bg-black text-white mt-8"
+                className="btn text-white mt-8 bg-[#F31260] hover:bg-[#F3126090]"
             >
                 Create Adventure
             </button>
