@@ -2,19 +2,19 @@
 import toast from "react-hot-toast";
 import { useCopyToClipboard } from "usehooks-ts";
 import { erc20Abi, formatEther } from "viem";
-import { useAccount, usePublicClient, useReadContract } from "wagmi";
-import { motion } from "framer-motion"
+import { useAccount, useReadContract, useWalletClient } from "wagmi";
+import { Address } from "abitype";
+import { formatNumber } from "utils/format";
 
 export default function Assets() {
 
     const { address } = useAccount()
-    const publicClient = usePublicClient();
 
     const { data: sstBalance } = useReadContract({
         abi: erc20Abi,
         address: '0x6689F6C3E4bEd414038c1c2f390867c9b23f8B53',
         functionName: 'balanceOf',
-        args: [address]
+        args: [address as Address]
     })
 
     const [, copy] = useCopyToClipboard()
@@ -26,6 +26,10 @@ export default function Assets() {
             })
     }
 
+    const formatVal = (num: bigint | undefined) => {
+        if (!num) return ''
+        return formatNumber(formatEther(num))
+    }
 
     return <>
         <div className="card w-96 bg-base-100 shadow-[0_0_8px_rgba(0,0,0,.1)]">
@@ -38,7 +42,7 @@ export default function Assets() {
                 </h3>
                 <div className="flex items-center">
                     Balance:
-                    <span className="text-2xl ml-2">{sstBalance ? formatEther(sstBalance) : "-"}</span>
+                    <span className="text-2xl ml-2 truncate">{formatVal(sstBalance)}</span>
                 </div>
             </div>
         </div>

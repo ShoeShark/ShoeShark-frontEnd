@@ -24,16 +24,18 @@ export default function Nav() {
         }
     ]
 
-    return <div role="tablist" className="tabs">
+    return <>
         {
             links.map(link =>
-                <Link key={link.href} className={clsx([
-                    "tab cursor-pointer",
-                    path.startsWith(link.type) ? "underline" : ""
-                ])} href={link.href}>
-                    {link.text}
-                </Link>
+                <li className="marker:display-none" key={link.href}>
+                    <Link className={clsx([
+                        "tab cursor-pointer text-md",
+                        path.startsWith(link.type) ? "underline" : ""
+                    ])} href={link.href}>
+                        {link.text}
+                    </Link>
+                </li>
             )
         }
-    </div>
+    </>
 }
