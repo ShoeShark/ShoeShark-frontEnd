@@ -2,26 +2,35 @@
 import clsx from "clsx"
 import TokenInput from "../components/TokenInput"
 import { SST, WETH } from "config/constants/token"
-import { getContract, parseEther, formatEther, erc20Abi, Address, ContractFunctionRevertedError } from "viem"
-import { publicClient, walletClient } from "config"
+import { getContract, parseEther, formatEther, Address } from "viem"
 import { SWAP_ROUTER } from "contracts/SwapRouter"
 import { formatNumber, subtractSlippage } from "utils/format"
 import { notification } from "antd"
 import Link from "next/link"
+import { useAccount, useConnectorClient, useConnections, useWriteContract } from "wagmi"
+import { publicClient } from "config"
 
 export default function TokenSwap() {
+    const account = useAccount()
 
     const [inToken, setInToken] = useState(WETH)
     const [outToken, setOutToken] = useState(SST)
     const [inAmount, setInAmount] = useState('')
     const [outAmount, setOutAmount] = useState('')
-    const [gasEstimate, setGasEstimate] = useState('0')
+    // const [gasEstimate, setGasEstimate] = useState('0')
+
     const [price, setPrice] = useState("")
 
     const [btnLoading, setBtnLoading] = useState(false)
     const [btnText, setBtnText] = useState('swap')
 
     const [api, contextHolder] = notification.useNotification()
+
+    // const connections = useConnections()
+    // const { data: connector } = useConnectorClient({
+    //     connector: connections[0]?.connector,
+    // })
+    const { writeContract } = useWriteContract()
 
     const openNotification = (message: string, txHash: string, isSuccess: boolean) => {
         api.info({
@@ -34,13 +43,11 @@ export default function TokenSwap() {
         })
     }
 
-
     const routerContract = getContract({
         address: SWAP_ROUTER.address,
         abi: SWAP_ROUTER.abi,
         client: {
-            public: publicClient,
-            wallet: walletClient
+            public: publicClient!,
         }
     })
 
@@ -85,7 +92,6 @@ export default function TokenSwap() {
         }
 
         if (inToken == WETH) {
-            const [address] = await walletClient.getAddresses()
             const path = [inToken, outToken] as Address[]
 
             // const gas = await publicClient.estimateContractGas({
@@ -104,28 +110,32 @@ export default function TokenSwap() {
 
             try {
                 const { request } = await publicClient.simulateContract({
-                    account: address,
+                    account: account.address,
                     address: SWAP_ROUTER.address,
                     abi: SWAP_ROUTER.abi,
                     functionName: 'swapExactAVAXForTokens',
                     args: [
                         parseEther(outAmount),
                         path,
-                        address,
+                        account.address!,
                         BigInt(Math.floor(Date.now() / 1000 + 300))
                     ],
                     value: parseEther(inAmount)
                 })
-                const txHash = await walletClient.writeContract(request)
+                writeContract(request, {
+                    async onSettled(txHash) {
+                        const tx = await publicClient.waitForTransactionReceipt(
+                            { hash: txHash! }
+                        )
+                        openNotification(`Swap ${inAmount} Avax for ${outAmount} SST`, txHash!, tx.status == "success")
+
+                        setBtnLoading(false)
+                        setBtnText("swap")
+
+                    }
+                })
                 setBtnLoading(true)
                 setBtnText("waiting for transaction")
-                const tx = await publicClient.waitForTransactionReceipt(
-                    { hash: txHash }
-                )
-                openNotification(`Swap ${inAmount} Avax for ${outAmount} SST`, txHash, tx.status == "success")
-
-                setBtnLoading(false)
-                setBtnText("swap")
 
             } catch (err) {
                 setBtnLoading(false)

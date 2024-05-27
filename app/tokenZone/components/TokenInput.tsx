@@ -4,8 +4,8 @@ import USDCIcon from "components/Icons/USDC"
 import SSTIcon from "components/Icons/Logo"
 import { SST, USDC, WETH } from "config/constants/token";
 import { Address, erc20Abi, formatEther } from "viem";
-import { publicClient, walletClient } from "config";
-import gsap from "gsap";
+import { publicClient } from "config";
+import { useAccount } from "wagmi"
 
 type TokenInputProps = {
     title: string
@@ -45,6 +45,7 @@ export default function TokenInput({
     amountVal,
     setAmount
 }: TokenInputProps) {
+    const account = useAccount()
     const options = type == 'in' ? inOptions : outOptions
 
     const logo = useMemo(() => {
@@ -57,14 +58,17 @@ export default function TokenInput({
         }
     }
     const [balance, setBalance] = useState('');
+    // const result = useBalance({
+    //     address: '0x4557B18E779944BFE9d78A672452331C186a9f48',
+    //     blockTag: 'latest',
+    // })
 
     async function loadBalance() {
         let _bal: bigint;
-        const [address] = await walletClient.getAddresses()
 
         if (tokenVal == WETH) {
             _bal = await publicClient.getBalance({
-                address: address!,
+                address: account.address!,
                 blockTag: 'safe'
             })
         } else {
@@ -72,7 +76,7 @@ export default function TokenInput({
                 address: tokenVal as Address,
                 abi: erc20Abi,
                 functionName: "balanceOf",
-                args: [address]
+                args: [account.address!]
             })
         }
 
@@ -80,13 +84,10 @@ export default function TokenInput({
     }
 
     useEffect(() => {
-        loadBalance()
+        if (account.address)
+            loadBalance()
 
-    }, [tokenVal])
-
-    useEffect(() => {
-        // gsap.to({}, )
-    })
+    }, [tokenVal, account.address])
 
     function setMax() {
         setAmount(balance)
