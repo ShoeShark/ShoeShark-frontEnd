@@ -17,7 +17,6 @@ export default function Feature() {
 
                 scrollTrigger: {
                     trigger: ".section-feature",
-                    scroller: ".section-scroller",
                     start: () => "top -" + (window.innerHeight * (i + 0.5)),
                     end: () => "+=" + window.innerHeight,
                     scrub: true,
@@ -39,7 +38,6 @@ export default function Feature() {
 
                     scrollTrigger: {
                         trigger: ".section-feature",
-                        scroller: ".section-scroller",
                         start: () => "top -" + (window.innerHeight * i),
                         end: () => "+=" + window.innerHeight,
                         scrub: true,
@@ -56,7 +54,6 @@ export default function Feature() {
 
         ScrollTrigger.create({
             trigger: ".section-feature",
-            scroller: ".section-scroller",
             scrub: true,
             pin: true,
             start: () => "top top",
