@@ -1,7 +1,6 @@
 'use server'
 
-import { log } from "../utils/util"
-import { authHeaders } from "./common"
+import { fetchWithAuth, log } from "../utils/util"
 
 const BaseUrl = process.env.NEXT_PUBLIC_SERVICE_BASE_URL
 
@@ -39,31 +38,24 @@ export const verify = async (p: object) => {
 }
 
 export const contentList = async (p) => {
-    
-    const header = await authHeaders()
-    const res = await fetch(`${BaseUrl}/content/list`, {
-        headers: header,
-    })
+    const res = await fetchWithAuth(`${BaseUrl}/content/list`)
     const data = await res.json()
     return data
 }
 
 export const contentDetail = async (id: number | string) => {
-    const header = await authHeaders()
-    const res = await fetch(`${BaseUrl}/content/${id}`, {
-        headers: header,
-    })
+    const res = await fetchWithAuth(`${BaseUrl}/content/${id}`, {})
     const data = await res.json()
     return data
 }
 
 export const contentSave = async (body: BodyInit) => {
     // const b = JSON.stringify(body)
-    const headers = await authHeaders()
-    headers.append('Content-type', 'application/json')
-    const res = await fetch(`${BaseUrl}/content/save`, {
-        headers,
+    const res = await fetchWithAuth(`${BaseUrl}/content/save`, {
         method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
         body,
         redirect: 'follow',
     })

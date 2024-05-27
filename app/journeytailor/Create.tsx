@@ -47,9 +47,9 @@ export default function CreateForm({
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault()
         const p = {
-            city: city.value,
-            date_start: formatDate(date.start),
-            date_end: formatDate(date.end),
+            city: city?.value,
+            date_start: formatDate((date as any).start),
+            date_end: formatDate((date as any).end),
             // date_start: date.start.toString(),
             // date_end: date.end.toString(),
             budget,

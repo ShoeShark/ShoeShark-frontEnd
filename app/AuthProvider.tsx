@@ -5,6 +5,7 @@ import { getToken, removeToken, setToken } from 'actions/token';
 import React from 'react';
 import toast from 'react-hot-toast';
 import { log } from 'utils/util';
+import { Address } from 'viem';
 import { useAccount, useDisconnect } from 'wagmi';
 
 // AuthProvider.js
@@ -27,7 +28,7 @@ export const AuthProvider = ({ children }) => {
     const authenticationAdapter = createAuthenticationAdapter({
         getNonce: async () => {
             log('account', address)
-            const nonce = await fetchNonce(address)
+            const nonce = await fetchNonce(address as Address)
             return nonce
         },
         createMessage: ({ nonce, address, chainId }) => {

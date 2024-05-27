@@ -43,7 +43,7 @@ export default function JourneyTailor() {
             componentIndex === 0 && <CreateForm onSubmit={handleGenerate} />
         }
         {
-            componentIndex === 1 && <Result result={result} />
+            (componentIndex === 1 && result) && <Result result={result} />
         }
     </div>
 }

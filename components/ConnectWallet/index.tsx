@@ -14,11 +14,12 @@ export const CustomConnect = () => {
                 openChainModal,
                 openConnectModal,
                 mounted,
+                authenticationStatus,
             }) => {
                 const ready = mounted;
                 const connected = ready && account && chain;
 
-                if (!connected) {
+                if (!connected || authenticationStatus !== 'authenticated') {
                     return (
                         <button
                             type="button"
