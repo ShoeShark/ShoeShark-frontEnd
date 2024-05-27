@@ -40,6 +40,9 @@ export default function InspirationPublishPage() {
     }
 
     const handleCreate = async () => {
+        if (!editorRef.current) {
+            return
+        }
         const editor = editorRef.current.getEditor()
         const description = JSON.stringify(editor.document)
         const body = {
