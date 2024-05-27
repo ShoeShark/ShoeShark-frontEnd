@@ -1,14 +1,18 @@
 "use client"
 import toast from "react-hot-toast";
 import { useCopyToClipboard } from "usehooks-ts";
-import { erc20Abi, formatEther } from "viem";
-import { useAccount, useReadContract, useWalletClient } from "wagmi";
+import { erc20Abi, formatEther, getContract } from "viem";
+import { useAccount, useClient, useReadContract, useReadContracts } from "wagmi";
 import { Address } from "abitype";
 import { formatNumber } from "utils/format";
+import { NFT, SST } from "config/constants/token";
+// import { publicClient, walletClient } from "config";
+import { SHOESHARK_NFT } from "contracts/NFT";
 
 export default function Assets() {
 
     const { address } = useAccount()
+    const client = useClient()
 
     const { data: sstBalance } = useReadContract({
         abi: erc20Abi,
@@ -17,10 +21,37 @@ export default function Assets() {
         args: [address as Address]
     })
 
+    useEffect(() => {
+        // getNFT()
+
+    }, [address])
+    const nftContract = {
+        address: SHOESHARK_NFT.address as Address,
+        abi: SHOESHARK_NFT.abi,
+    }
+    const { data: total } = useReadContract({
+        ...nftContract,
+        functionName: "totalSupply"
+    })
+    console.log(total)
+    // async function getNFT() {
+    //
+    //     const total = await nftContract.read.totalSupply()
+    //     console.log(address)
+    //     const a = await nftContract.read.tokenOfOwnerByIndex([
+    //         address as Address,
+    //         0n
+    //     ])
+    //
+    //     console.log(a)
+    //
+    //
+    // }
+
     const [, copy] = useCopyToClipboard()
 
     const handleCopy = () => {
-        copy("0x99")
+        copy(SST)
             .then(() => {
                 toast.success("copy success")
             })
