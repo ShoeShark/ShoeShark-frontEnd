@@ -110,7 +110,7 @@ export default function Result({ result }: {
                             onClick={() => onSelect(index)}
                             className={clsx([
                                 'flex justify-between items-center rounded-btn py-2 px-4 mb-4 cursor-pointer',
-                                index === selected ? 'ring-2' : 'border border-gray-300',
+                                index === selected ? 'border-2 border-[#f31260]' : 'border border-gray-300',
                             ])}
                         >
                             <div>
@@ -131,7 +131,11 @@ export default function Result({ result }: {
                 activities.map((activity: IActivity) => {
                     return <div className='text-gray-500 w-full' key={activity.order}>
                         {/* card content */}
-                        <div className="border border-gray-300 w-full bg-gray-50 rounded-lg p-4">
+                        <div className={clsx([
+                                'bg-[#f31260bb] card text-white',
+                                ' w-full rounded-lg p-4',
+                            ])}
+                        >
                             <div className='text-lg font-bold mb-2'>{activity.place}</div>
                             <div>{activity.text}</div>
                             {
@@ -144,9 +148,9 @@ export default function Result({ result }: {
                         {/* divider content */}
                         {
                             Number(activity.duration_m) > 0 && <div className='flex items-center'>
-                                <div className='border-r border-1 border-gray-300 ml-12 h-[80px] w-0'></div>
-                                <div className="icon-[ic--sharp-directions-bus] text-2xl mx-2 text-gray-500"></div>
-                                <div className='text-lg'>{activity.duration_m}h</div>
+                                <div className='border-r border-1 border-[#f3126099] ml-12 h-[80px] w-0'></div>
+                                <div className="icon-[ic--sharp-directions-bus] text-2xl mx-2 text-[#f3126099]"></div>
+                                <div className='text-lg text-[#f3126099]'>{activity.duration_m}h</div>
                             </div>
                         }
                     </div>

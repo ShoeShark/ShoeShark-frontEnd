@@ -95,11 +95,11 @@ export function Filter({
             <button
                 disabled={loading}
                 onClick={() => handleFilter()}
-                className="btn bg-base-content text-base-100 mt-2"
+                className="btn bg-[#f31260] hover:bg-[#f31260] text-base-100 mt-2"
             >
-                <span className={clsx({
-                    loading,
-                })}>Filter</span>
+                <span className={clsx([
+                    loading && 'loading',
+                ])}>Filter</span>
             </button>
         </div>
     </div>
