@@ -2,9 +2,46 @@
 
 import Image from "next/image"
 import clsx from 'clsx'
+import { useAccount, useReadContract, useWriteContract } from "wagmi"
+import { Address, erc20Abi } from "viem"
+import { log } from "utils/util"
+import toast from "react-hot-toast"
 
-export function Donate() {
+const CONTRACT_ADDRESS = '0x7d75494BeC827cE2F046b6d73C7307a6dA9B2856'
+
+export function Donate({
+    author,
+}: {
+    author: Address;
+}) {
     const [opened, setOpened] = useState(true)
+    const [amount, setAmount] = useState('')
+    
+    const {address} = useAccount()
+    log('addr', address)
+    const {data: sstBalance, isLoading, status} = useReadContract({
+        abi: erc20Abi,
+        address: CONTRACT_ADDRESS,
+        functionName: 'balanceOf',
+        args: [address as Address]
+    })
+    const {writeContractAsync} = useWriteContract()
+
+    const handleDonate = async () => {
+        if (BigInt(amount) > BigInt(sstBalance || 0)) {
+            toast.error('Amount is not enough')
+            return
+        }
+        await writeContractAsync({
+            abi: erc20Abi,
+            address: CONTRACT_ADDRESS,
+            functionName: 'transfer',
+            args: [
+                author,
+                BigInt(amount),
+            ],
+        })
+    }
 
     return <div>
         {
@@ -13,12 +50,12 @@ export function Donate() {
                     <button onClick={() => setOpened(false)} className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                     <div>
                         <h1 className="font-bold text-2xl my-6">Enter Amount</h1>
-                        <input type="text" placeholder="" className="input input-bordered w-full" />
+                        <input onChange={(e) => setAmount(e.target.value)} type="number" placeholder="" className="input input-bordered w-full" />
                         <div className="flex justify-between items-center my-4">
-                            <div>Avaiable: 100.00</div>
-                            <span className="badge badge-neutral cursor-pointer">Max</span>
+                            <div>Avaiable: 100.00 =={sstBalance}=={isLoading}=={status}</div>
+                            <span className="block badge badge-neutral cursor-pointer">Max</span>
                         </div>
-                        <button className="btn btn-primary">Confirm</button>
+                        <button onClick={() => handleDonate()} className="btn btn-primary">Confirm</button>
                     </div>
                 </div>
             </dialog>
