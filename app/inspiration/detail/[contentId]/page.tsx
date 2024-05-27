@@ -30,7 +30,7 @@ export default async function InspirationDetailPage({
         </div>
 
         <div className="text-center">
-            <Donate />
+            <Donate author={detail.account_address} />
             <Comment />
         </div>
 
