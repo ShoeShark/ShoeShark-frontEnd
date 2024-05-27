@@ -7,7 +7,7 @@ import { WagmiProvider } from "wagmi";
 
 import { ReactNode } from "react";
 import { avalancheFuji } from "viem/chains";
-import { wagmiConfig } from "utils/config";
+import { wagmiConfig } from "config/wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "./AuthProvider";
 

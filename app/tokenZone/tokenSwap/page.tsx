@@ -1,24 +1,144 @@
 "use client"
 import clsx from "clsx"
 import TokenInput from "../components/TokenInput"
-import { Token, Fetcher, Trade, Route, Percent } from "@uniswap/sdk"
+import { SST, WETH } from "config/constants/token"
+import { getContract, parseEther, formatEther, erc20Abi, Address, ContractFunctionRevertedError } from "viem"
+import { publicClient, walletClient } from "config"
+import { SWAP_ROUTER } from "contracts/SwapRouter"
+import { formatNumber, subtractSlippage } from "utils/format"
+import { notification } from "antd"
+import Link from "next/link"
 
 export default function TokenSwap() {
-    const [inToken, setInToken] = useState('ETH')
-    const [outToken, setOutToken] = useState('SST')
+
+    const [inToken, setInToken] = useState(WETH)
+    const [outToken, setOutToken] = useState(SST)
     const [inAmount, setInAmount] = useState('')
     const [outAmount, setOutAmount] = useState('')
-    const [inputTokenBalance, setInputTokenBalance] = useState('0');
-    const [outputTokenBalance, setOutputTokenBalance] = useState('0');
-    const [gasEstimate, setGasEstimate] = useState('0');
+    const [gasEstimate, setGasEstimate] = useState('0')
+    const [price, setPrice] = useState("")
+
+    const [btnLoading, setBtnLoading] = useState(false)
+    const [btnText, setBtnText] = useState('swap')
+
+    const [api, contextHolder] = notification.useNotification()
+
+    const openNotification = (message: string, txHash: string, isSuccess: boolean) => {
+        api.info({
+            message: <div className="flex flex-col">
+                <span>{message}</span>
+                <Link href={`https://testnet.snowscan.xyz/tx/${txHash}`} target="_blank" className="link link-hover">I'm a simple link</Link>
+            </div>,
+            type: isSuccess ? "success" : "error",
+            placement: "topRight",
+        })
+    }
+
+
+    const routerContract = getContract({
+        address: SWAP_ROUTER.address,
+        abi: SWAP_ROUTER.abi,
+        client: {
+            public: publicClient,
+            wallet: walletClient
+        }
+    })
+
+    async function getOutAmount(_in: string = inAmount) {
+        try {
+            const _inAmount = String(Number(_in))
+            const [, amountsOut] = await routerContract.read.getAmountsOut([
+                parseEther(_inAmount),
+                [WETH, SST]
+            ])
+
+            const _out = formatEther(subtractSlippage(amountsOut, 0.01))
+            setOutAmount(String(Number(_out).toFixed(2)))
+            return _out
+        } catch (err) {
+            setOutAmount('0')
+            return '0'
+        }
+    }
 
     useEffect(() => {
-        // 这里我们用一个固定的Token地址作为输出Token，比如ETH
-        const tokenAddress = '0x6689F6C3E4bEd414038c1c2f390867c9b23f8B53'; // Wrapped ETH on Rinkeby testnet
-        // console.log(new Token(43317, tokenAddress, 18))
-    }, []);
+        if (inAmount != '') {
+            getOutAmount();
+        }
+    }, [inAmount]);
+
+    useEffect(() => {
+        getPrice();
+    }, [])
+
+    async function getPrice() {
+        const [, out] = await routerContract.read.getAmountsOut([
+            parseEther("1"),
+            [WETH, SST]
+        ]);
+        setPrice(formatNumber(formatEther(out)));
+    }
+
+    async function swap() {
+        if (!inToken || !outToken || !inAmount || !outAmount || btnLoading) {
+            return
+        }
+
+        if (inToken == WETH) {
+            const [address] = await walletClient.getAddresses()
+            const path = [inToken, outToken] as Address[]
+
+            // const gas = await publicClient.estimateContractGas({
+            //     account: address,
+            //     address: SWAP_ROUTER.address,
+            //     abi: SWAP_ROUTER.abi,
+            //     functionName: 'swapExactAVAXForTokens',
+            //     args: [
+            //         parseEther(outAmount),
+            //         path,
+            //         address,
+            //         BigInt(Math.floor(Date.now() / 1000 + 300))
+            //     ],
+            //     value: parseEther(inAmount)
+            // })
+
+            try {
+                const { request } = await publicClient.simulateContract({
+                    account: address,
+                    address: SWAP_ROUTER.address,
+                    abi: SWAP_ROUTER.abi,
+                    functionName: 'swapExactAVAXForTokens',
+                    args: [
+                        parseEther(outAmount),
+                        path,
+                        address,
+                        BigInt(Math.floor(Date.now() / 1000 + 300))
+                    ],
+                    value: parseEther(inAmount)
+                })
+                const txHash = await walletClient.writeContract(request)
+                setBtnLoading(true)
+                setBtnText("waiting for transaction")
+                const tx = await publicClient.waitForTransactionReceipt(
+                    { hash: txHash }
+                )
+                openNotification(`Swap ${inAmount} Avax for ${outAmount} SST`, txHash, tx.status == "success")
+
+                setBtnLoading(false)
+                setBtnText("swap")
+
+            } catch (err) {
+                setBtnLoading(false)
+                setBtnText("swap")
+                console.log(err)
+            }
+
+        }
+
+    }
 
     return <div className="flex w-full justify-center pt-4">
+        {contextHolder}
         <div className={clsx([
             "card min-w-80 w-[30rem] gradient-animated shadow-xl",
             "bg-gradient-to-r from-[#e9defa] via-[#e3eeff] to-[#fed6e3]"
@@ -44,22 +164,27 @@ export default function TokenSwap() {
                 <div className="collapse collapse-arrow mt-2 bg-[#FFFFFFBD] shadow-2xl">
                     <input type="checkbox" />
                     <div className="collapse-title">
-                        1 SST = 1 ETH
+                        1 Avax = <span className="max-w-[70%] truncate">{price}</span> SST
                     </div>
                     <div className="collapse-content">
                         <div className="flex justify-between">
-                            <span>expect output: </span>
-                            <span>999</span>
+                            <span>Price Impact: </span>
+                            <span>1%</span>
                         </div>
-                        <div className="flex justify-between">
-                            <span>network fee: </span>
-                            <span>0.001eth</span>
-                        </div>
+                        {/* <div className="flex justify-between"> */}
+                        {/*     <span>network fee: </span> */}
+                        {/*     <span>0.001eth</span> */}
+                        {/* </div> */}
                     </div>
                 </div>
 
-                <div className="btn bg-[#F31260] hover:bg-[#F3126090] border-none mt-6 mx-16 text-white">
-                    swap
+                <div
+                    onClick={swap}
+                    className="btn bg-[#F31260] hover:bg-[#F3126090] border-none mt-6 mx-16 text-white">
+                    {
+                        btnLoading && <span className="loading loading-spinner"></span>
+                    }
+                    {btnText}
                 </div>
             </div>
         </div>

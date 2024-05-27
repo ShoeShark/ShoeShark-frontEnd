@@ -11,14 +11,14 @@ import Scrollbar from "smooth-scrollbar"
 
 export default function Home() {
     useGSAP(() => {
-        const scrollBox = Scrollbar.init(document.querySelector(".section-mainview"), {
+        const scrollBox = Scrollbar.init(document.querySelector(".section-mainview")!, {
             damping: 0.1,
             delegateTo: document,
         });
         ScrollTrigger.scrollerProxy(".section-scroller", {
             scrollTop(value) {
                 if (arguments.length) {
-                    scrollBox.scrollTop = value;
+                    scrollBox.scrollTop = value!;
                 }
                 return scrollBox.scrollTop;
             },

@@ -31,7 +31,7 @@ export default function End() {
                 autoAlpha: 0,
                 xPercent: 20,
                 yPercent: -20,
-                duration: .33
+                duration: .5
             })
             .from(".footer", {
                 yPercent: 20,

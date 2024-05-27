@@ -7,7 +7,7 @@ import "./NftIntro.scss";
 export default function NftIntro() {
 
     useGSAP(() => {
-        const gallery: HTMLDivElement = document.querySelector('.gallery')
+        const gallery: HTMLDivElement = document.querySelector('.gallery')!;
         gsap.timeline({
             scrollTrigger: {
                 trigger: ".section-nftIntro",
@@ -26,7 +26,7 @@ export default function NftIntro() {
 
             .to(".gallery", {
                 x: `-${gallery.offsetWidth}`,
-                duration: 3
+                duration: 10
             })
     })
 

@@ -31,7 +31,7 @@ export default function TokenZoneLayout({
                         title={
                             <Link
                                 href="/personalCenter/myAssets"
-                                className="flex items-center justify-start"
+                                className="flex items-center justify-center py-1 px-3"
                             >
                                 <span className="icon-[ic--baseline-art-track] mr-1 text-2xl"></span>
                                 My Assets
@@ -43,7 +43,7 @@ export default function TokenZoneLayout({
                         title={
                             <Link
                                 href="/personalCenter/myInspiration"
-                                className="flex items-center justify-start"
+                                className="flex items-center justify-center"
                             >
                                 <span className="icon-[ic--baseline-wallet] mr-1 text-2xl text-black"></span>
                                 My Inspiration
@@ -55,7 +55,7 @@ export default function TokenZoneLayout({
                         title={
                             <Link
                                 href="/personalCenter/myPoints"
-                                className="flex items-center justify-start"
+                                className="flex items-center justify-center"
                             >
                                 <span className="icon-[ic--outline-auto-awesome] mr-1 text-2xl text-black"></span>
                                 My Points
