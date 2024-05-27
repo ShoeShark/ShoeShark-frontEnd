@@ -11,7 +11,6 @@ export default function NftIntro() {
         gsap.timeline({
             scrollTrigger: {
                 trigger: ".section-nftIntro",
-                scroller: ".section-scroller",
                 start: 'top top',
                 end: `+=${gallery.offsetWidth / 2}`,
                 pin: true,

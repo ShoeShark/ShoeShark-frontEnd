@@ -1,18 +1,16 @@
 "use client"
 import toast from "react-hot-toast";
 import { useCopyToClipboard } from "usehooks-ts";
-import { erc20Abi, formatEther, getContract } from "viem";
-import { useAccount, useClient, useReadContract, useReadContracts } from "wagmi";
+import { erc20Abi, formatEther } from "viem";
+import { useAccount, useClient, useReadContract } from "wagmi";
 import { Address } from "abitype";
 import { formatNumber } from "utils/format";
-import { NFT, SST } from "config/constants/token";
-// import { publicClient, walletClient } from "config";
+import { SST } from "config/constants/token";
 import { SHOESHARK_NFT } from "contracts/NFT";
 
 export default function Assets() {
 
     const { address } = useAccount()
-    const client = useClient()
 
     const { data: sstBalance } = useReadContract({
         abi: erc20Abi,
