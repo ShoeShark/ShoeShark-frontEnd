@@ -62,3 +62,23 @@ export const contentSave = async (body: BodyInit) => {
     const data = await res.json()
     return data
 }
+
+export const commentSave = async (body: BodyInit) => {
+    // const b = JSON.stringify(body)
+    const res = await fetchWithAuth(`${BaseUrl}/content/comments`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body,
+        redirect: 'follow',
+    })
+    const data = await res.json()
+    return data
+}
+
+export const commentList = async (contentId: string) => {
+    const res = await fetchWithAuth(`${BaseUrl}/content/comments/${contentId}`)
+    const data = await res.json()
+    return data
+}
