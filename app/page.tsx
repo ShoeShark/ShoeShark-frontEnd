@@ -4,42 +4,18 @@ import SectionIntro from "components/Section/Intro";
 import SectionFeature from "components/Section/Feature";
 import SectionNftIntro from "components/Section/NftIntro";
 import SectionEnd from "components/Section/End";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import Scrollbar from "smooth-scrollbar"
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export default function Home() {
     useGSAP(() => {
-        const scrollBox = Scrollbar.init(document.querySelector(".section-mainview")!, {
-            damping: 0.1,
-            delegateTo: document,
-        });
-        ScrollTrigger.scrollerProxy(".section-scroller", {
-            scrollTop(value) {
-                if (arguments.length) {
-                    scrollBox.scrollTop = value!;
-                }
-                return scrollBox.scrollTop;
-            },
-            getBoundingClientRect() {
-                return {
-                    top: 0,
-                    left: 0,
-                    width: window.innerWidth,
-                    height: window.innerHeight,
-                };
-            },
+
+        ScrollTrigger.create({
+            start: 'top -70',
+            end: 99999,
+            toggleClass: { className: 'h-[3rem]', targets: '.moveable-navbar' }
         });
 
-        const navTl = gsap.timeline({ paused: true })
-            .from('.moveable-navbar', { height: '3rem', duration: 0.2 })
-            .progress(1);
-
-        scrollBox.addListener(e => {
-            ScrollTrigger.update();
-            e.offset.y > 80 ? navTl.reverse() : navTl.play();
-        })
     })
 
     return (

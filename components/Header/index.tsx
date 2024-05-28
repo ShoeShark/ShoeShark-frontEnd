@@ -6,7 +6,7 @@ import Nav from "./Nav";
 
 const Header = () => {
     return (
-        <div className="navbar moveable-navbar drop-shadow fixed w-full z-50 top-0 shadow-md backdrop-blur px-4 py-0 h-20 min-h-10">
+        <div className="navbar moveable-navbar transition-all drop-shadow fixed w-full z-50 top-0 shadow-md backdrop-blur px-4 py-0 h-20 min-h-10">
             <div className="navbar-start">
                 {/* <div className="dropdown"> */}
                 {/*     <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden"> */}
