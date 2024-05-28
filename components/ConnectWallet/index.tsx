@@ -1,9 +1,10 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Container, { OuterContainer, InnerContainer } from "../Layout/Container";
-// import Image from "next/image";
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
-import Image from "next/image";
 import clsx from 'clsx';
+import { Popover, PopoverTrigger, PopoverContent, User } from "@nextui-org/react";
+import UserButton from "./UserButton";
+
 export const CustomConnect = () => {
     return (
         <ConnectButton.Custom>
@@ -28,7 +29,7 @@ export const CustomConnect = () => {
                                 'transition backdrop-blur',
                                 'rounded-full px-3 py-2',
                                 'shadow-lg shadow-pure-800/5',
-                                'bg-neutral-600/90',
+                                'bg-main',
                                 'ring-1 ring-white/10 hover:ring-white/20',
                                 'text-sm font-medium',
                                 'text-white hover:text-pri-400',
@@ -66,26 +67,7 @@ export const CustomConnect = () => {
                 }
 
                 return (
-                    <button
-                        onClick={openAccountModal}
-                        type="button"
-                        className={clsx([
-                            'transition backdrop-blur',
-                            'inline-flex items-center gap-1',
-                            'rounded-full pl-4 pr-2 py-2',
-                            'shadow-lg shadow-pure-800/5',
-                            'bg-neutral-600/90',
-                            'ring-1 ring-white/10 hover:ring-white/20',
-                            'font-medium text-sm text-white hover:text-pri-400',
-                        ])}
-                    >
-                        <span>
-                            {account.displayName}
-                        </span>
-                        {/* {account.displayBalance ? ` (${account.displayBalance})` : ""} */}
-
-                        <ChevronDownIcon className="h-auto w-5 " aria-hidden="true" />
-                    </button>
+                    <UserButton account={account} />
                 );
             }}
         </ConnectButton.Custom>

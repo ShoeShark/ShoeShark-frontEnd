@@ -37,8 +37,10 @@ export const verify = async (p: object) => {
     return token
 }
 
-export const contentList = async (p) => {
-    const res = await fetchWithAuth(`${BaseUrl}/content/list`)
+export const contentList = async (params?: Record<string, any>) => {
+    const paramsStr = params ? new URLSearchParams(params).toString() : ""
+
+    const res = await fetchWithAuth(`${BaseUrl}/content/list?${paramsStr}`)
     const data = await res.json()
     return data
 }
