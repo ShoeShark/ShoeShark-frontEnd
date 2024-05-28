@@ -61,9 +61,9 @@ export function Donate({
             </dialog>
         }
 
-        <div className="inline-flex items-center p-4 rounded-lg bg-gray-300">
+        <div className="inline-flex items-center p-4 rounded-lg bg-gradient-to-r from-[#fdcbf1aa] to-[#ace0f9aa]">
             <div className="mr-2">If you find this content helpful, feel free to show your support with a tip.</div>
-            <Image onClick={() => setOpened(true)}  className="cursor-pointer" src='/donate.png' width={24} height={24} alt="donate" />
+            <Image onClick={() => setOpened(true)}  className="cursor-pointer hover:scale-110" src='/donate.png' width={24} height={24} alt="donate" />
         </div>
     </div>
 
