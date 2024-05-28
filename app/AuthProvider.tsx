@@ -2,6 +2,8 @@
 import { AuthenticationStatus, RainbowKitAuthenticationProvider, createAuthenticationAdapter } from '@rainbow-me/rainbowkit';
 import { fetchNonce, verify } from 'actions/content';
 import { getToken, removeToken, setToken } from 'actions/token';
+import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import toast from 'react-hot-toast';
 import { log } from 'utils/util';
@@ -14,6 +16,7 @@ export const AuthProvider = ({ children }) => {
     const [authStatus, setAuthStatus] = useState<AuthenticationStatus>('unauthenticated')
     const { address } = useAccount()
     const { disconnect } = useDisconnect()
+    const router = useRouter()
 
     useEffect(() => {
         init()
@@ -64,6 +67,7 @@ export const AuthProvider = ({ children }) => {
             log('signout call')
             setAuthStatus('unauthenticated')
             removeToken()
+            router.replace("/")
         },
     });
 

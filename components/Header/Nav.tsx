@@ -19,7 +19,7 @@ export default function Nav() {
         },
         {
             href: "/tokenZone",
-            type: "/tokenZone",
+            type: "/tokenZone/tokenSwap",
             text: "Token Zone"
         }
     ]

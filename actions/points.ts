@@ -1,0 +1,17 @@
+'use server'
+
+import { fetchWithAuth, log } from "../utils/util"
+
+const BaseUrl = process.env.NEXT_PUBLIC_SERVICE_BASE_URL
+
+export const pointsLog = async () => {
+    const res = await fetchWithAuth(`${BaseUrl}/points/log`, { cache: 'no-store' })
+    const data = await res.json()
+    return data
+}
+
+export const signIn = async () => {
+    const res = await fetchWithAuth(`${BaseUrl}/points/signIn`)
+    const data = await res.json()
+    return data
+}

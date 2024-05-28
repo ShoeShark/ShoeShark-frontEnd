@@ -44,3 +44,7 @@ export const formatNumber = (s: string, digit: number = 4): string => {
     }
     return Number(s).toFixed(digit);
 };
+
+export function formatAddress(address: string) {
+    return address.slice(0, 4) + "..." + address.slice(-4);
+}

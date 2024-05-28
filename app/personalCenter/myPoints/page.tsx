@@ -1,31 +1,23 @@
-"use client"
-import { message, notification } from "antd";
+import { pointsLog } from "actions/points";
 import PointsHistory from "./pointsHistory";
+import SignIn from "./SignIn"
 
-enum SIGN_STATUS {
-    SIGNIN = "Sign in",
-    SIGNED = "Signed in"
-}
+export default async function MyPointsPage() {
+    const { data } = await pointsLog()
 
-export default function MyPointsPage() {
-    const [point, setPoint] = useState("0")
-
-    const [signTxt, setSignTxt] = useState<SIGN_STATUS>(SIGN_STATUS.SIGNIN)
-    function sign() {
-        message.success("Sign in successful!")
-    }
+    const signData = data?.records?.find(item => {
+        const oneDay = 1000 * 60 * 60 * 24;
+        const expire = Date.now() - new Date(item.CreatedAt).getTime() <= oneDay
+        return item.Source == "SIGN_IN" && expire
+    })
 
     return (
         <div className="p-8">
             <div className="card w-96 bg-base-100 shadow-[0_0_8px_rgba(0,0,0,.1)]">
                 <div className="card-body py-6 gap-0">
                     <div className="flex justify-between">
-                        <h3 className="card-title">My Points: {point}</h3>
-                        <button
-                            className="btn btn-outline btn-sm"
-                            disabled={signTxt !== SIGN_STATUS.SIGNIN}
-                            onClick={sign}
-                        >{signTxt}</button>
+                        <h3 className="card-title">My Points: point</h3>
+                        <SignIn signed={!!signData} />
                     </div>
                     <details className="collapse collapse-arrow rounded-none">
                         <summary
@@ -42,7 +34,7 @@ export default function MyPointsPage() {
                     </details>
                 </div>
             </div>
-            <PointsHistory />
+            <PointsHistory records={data?.records} />
         </div>
     );
 }

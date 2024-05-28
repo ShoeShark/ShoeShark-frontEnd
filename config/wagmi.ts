@@ -1,8 +1,8 @@
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 
-import { sepolia, avalancheFuji } from "wagmi/chains";
+import { avalancheFuji } from "wagmi/chains";
 
-const chains = [sepolia, avalancheFuji] as const;
+const chains = [avalancheFuji] as const;
 
 export const wagmiConfig = getDefaultConfig({
     appName: "Shoe Shark",

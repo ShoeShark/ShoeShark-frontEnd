@@ -15,14 +15,13 @@ export default function NftIntro() {
                 end: `+=${gallery.offsetWidth / 2}`,
                 pin: true,
                 scrub: 0.5,
-            }
+            },
         })
             .from(".section-nftIntro-text", {
-                duration: 0.6,
+                duration: 0.8,
                 yPercent: -50,
-                autoAlpha: .6
+                scale: .85
             })
-
             .to(".gallery", {
                 x: `-${gallery.offsetWidth}`,
                 duration: 10

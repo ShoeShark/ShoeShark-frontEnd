@@ -21,11 +21,12 @@ export default function TokenZoneLayout({ children }: { children: React.ReactNod
             classNames={{
                 base: 'justify-center',
                 tabList: 'bg-white text-bold p-3',
-                cursor: 'bg-[#F2F2F2]',
+                cursor: 'shadow-[0_0_4px_#F31260]',
                 tabContent: 'font-bold'
             }}
             selectedKey={value}
             onSelectionChange={handleTabChange}
+            color="danger"
         >
             <Tab
                 key="/tokenZone/tokenSwap"
