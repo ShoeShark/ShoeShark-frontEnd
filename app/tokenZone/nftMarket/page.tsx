@@ -2,12 +2,18 @@
 import { useState, useEffect } from 'react';
 import { Image, Pagination, Button } from "@nextui-org/react";
 import { BarsArrowUpIcon, BarsArrowDownIcon } from '@heroicons/react/20/solid';
-import { useContractWrite, usePrepareContractWrite, useContractRead } from 'wagmi';
+import { useWriteContract, useSimulateContract, useReadContract, useChainId } from 'wagmi';
 import { parseUnits } from 'viem';
+import contractABI from "./DeployShoeSharkNftMarket.json"
+import { ethers } from "ethers";
 
 
 export default function NFTMarket() {
-    const contractAddress = '0x9839c148e6e645D15b0F1D4a3B8E3289b7D9f29D';
+
+    const contractAddress = '0x09cE8D7E2eC68C4445c8a7D1B922ebc0EFCe2366';
+    const provider = new ethers.JsonRpcProvider(`https://avalanche-fuji.infura.io/v3/599c8e1c92a54659b339ecbaad80c39c`)
+    const nftContract = new ethers.Contract(contractAddress, contractABI, provider)
+
 
     const initialData = [
         { id: 1, name: "Shark001", price: 1200, imgSrc: "https://white-left-chameleon-515.mypinata.cloud/ipfs/QmQFd8NxtwXyFohjiNSPfKGcdvG21bFjQMjiSq5EnRciPu/56.png" },
@@ -26,19 +32,14 @@ export default function NFTMarket() {
     const [data, setData] = useState(initialData);
     const [currentPage, setCurrentPage] = useState(1);
     const [sortOrder, setSortOrder] = useState('none'); // none, ascending, descending
-    const contractABI = []
-    const useGetAllNFTs = () => {
-        // const data = useContractRead({
-        //     address: contractAddress,
-        //     abi: contractABI,
-        //     functionName: 'getAllNFTs',
-        // });
-        // setData(data)
 
-    };
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentData = data.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(data.length / itemsPerPage);
 
     const useBuyNFT = (nftId, price) => {
-        // const { config } = usePrepareContractWrite({
+        // const { data } = useSimulateContract({
         //     address: contractAddress,
         //     abi: contractABI,
         //     functionName: 'buy',
@@ -48,12 +49,21 @@ export default function NFTMarket() {
         //     },
         // });
 
-        // const { write } = useContractWrite(config);
+        // const { write } = useWriteContract(config);
 
         // write()
     };
+    //获取nft list
+    const getData = async () => {
+        try {
+            const nfts = await nftContract.getAllNFTs();
+            console.log("NFT数据：", nfts);
+        } catch (error) {
+            console.error("获取NFT详情时出错:", error);
+        }
+    }
     useEffect(() => {
-        useGetAllNFTs();
+        getData();
     })
     const handleSortChange = () => {
         let newSortOrder;
@@ -72,11 +82,6 @@ export default function NFTMarket() {
     const handlePageChange = (page) => {
         setCurrentPage(page);
     };
-
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentData = data.slice(indexOfFirstItem, indexOfLastItem);
-    const totalPages = Math.ceil(data.length / itemsPerPage);
 
     return (
         <div className="flex w-screen justify-center">

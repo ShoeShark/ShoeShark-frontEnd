@@ -1,6 +1,4 @@
-"use client"
-import { contentList } from "actions/content";
-import { Listbox, ListboxItem, ScrollShadow } from "@nextui-org/react";
+import { ScrollShadow } from "@nextui-org/react";
 import Action from "./action"
 
 type props = {
@@ -9,7 +7,6 @@ type props = {
 
 export default function List({ listdata }: props) {
 
-    console.log(listdata)
     return <div>
         <ScrollShadow className="w-full h-[calc(100vh-14rem)] px-8">
             {
