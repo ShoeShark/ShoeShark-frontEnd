@@ -19,7 +19,7 @@ export function Comment({
 
     const loadComments = async () => {
         const res = await commentList(contentId)
-        setCommnets(res.data)
+        setCommnets(res.data || [])
         log('haha', res.data)
     }
 

@@ -45,7 +45,7 @@ export function Filter({
 
     const handleFilter = () => {
         const p = {
-            account_address: address,
+            accountAddress: address,
             title: title,
             description,
         }

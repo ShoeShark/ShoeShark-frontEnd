@@ -13,7 +13,7 @@ const pageSize = 20
 interface ISearchOption {
     page: number,
     page_size: number,
-    account_address?: string,
+    accountAddress?: string,
     title?: string,
     description?: string,
 }
