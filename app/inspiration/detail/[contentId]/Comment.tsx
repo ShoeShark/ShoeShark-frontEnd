@@ -2,6 +2,7 @@
 
 import { Avatar } from "@nextui-org/react"
 import { commentList, commentSave } from "actions/content";
+import clsx from "clsx";
 import toast from "react-hot-toast";
 import { log } from "utils/util";
 
@@ -12,6 +13,7 @@ export function Comment({
 }) {
     const [comment, setComment] = useState('')
     const [comments, setCommnets] = useState([])
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         loadComments()
@@ -19,11 +21,11 @@ export function Comment({
 
     const loadComments = async () => {
         const res = await commentList(contentId)
-        setCommnets(res.data)
-        log('haha', res.data)
+        setCommnets(res.data || [])
     }
 
     const handleSend = async () => {
+        setLoading(true)
         const b = JSON.stringify({
             contentId,
             description: comment,
@@ -31,6 +33,7 @@ export function Comment({
         await commentSave(b)
         setComment('')
         loadComments()
+        setLoading(false)
     }
 
     return <div className="mx-32 mt-14">
@@ -39,7 +42,10 @@ export function Comment({
             </textarea>
             <div
                 onClick={() => handleSend()}
-                className="icon-[ic--baseline-send] text-[#f31260] absolute bottom-4 right-2 text-3xl block cursor-pointer"
+                className={clsx([
+                    'text-[#f31260] absolute bottom-4 right-2 text-3xl block cursor-pointer',
+                    loading ? 'loading' : 'icon-[ic--baseline-send]',
+                ])}
             ></div>
         </div>
 

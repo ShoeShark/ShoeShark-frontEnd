@@ -82,7 +82,7 @@ export default function InspirationPublishPage() {
         </div>
 
         <div className="my-8 text-center">
-            <button className="btn btn-primary bg-black text-base-100" onClick={() => handleCreate()}>Create Story</button>
+            <button className="btn bg-main hover:bg-main text-white" onClick={() => handleCreate()}>Create Story</button>
         </div>
     </div>
 }

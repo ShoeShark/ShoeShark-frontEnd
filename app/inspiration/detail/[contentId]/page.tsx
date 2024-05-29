@@ -20,8 +20,8 @@ export default async function InspirationDetailPage({
         <header>
             <h1 className="text-center text-5xl font-bold mt-8 mb-4">title</h1>
             <div className="flex justify-center items-center">
-                <div className="pr-16 text-xl">{detail.account_address}</div>
-                <div className="text-gray-500">{formatDate(detail.updated_at)}</div>
+                <div className="pr-16 text-xl">{detail.accountAddress}</div>
+                <div className="text-gray-500">{detail.createdAt}</div>
             </div>
         </header>
 
@@ -30,7 +30,7 @@ export default async function InspirationDetailPage({
         </div>
 
         <div className="text-center">
-            <Donate author={detail.account_address} />
+            <Donate author={detail.accountAddress} />
             <Comment contentId={contentId} />
         </div>
 
