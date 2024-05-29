@@ -7,6 +7,7 @@ import { List } from "./List";
 import { Skeleton, Spinner } from "@nextui-org/react";
 import { notification } from "utils/notification";
 import clsx from "clsx";
+import Link from "next/link";
 
 const pageSize = 20
 
@@ -79,6 +80,11 @@ export default function InspirationListPage() {
                     </div>
                 </footer>
             </div>
+        </div>
+
+        <div className=" fixed right-8 bottom-8 z-10 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer hover:scale-110 bg-main">
+            <Link href='/inspiration/publish' className="icon-[ic--baseline-plus] text-white text-2xl">
+            </Link>
         </div>
 
     </div>
