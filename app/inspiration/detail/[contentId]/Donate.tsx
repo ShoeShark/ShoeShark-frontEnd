@@ -53,6 +53,7 @@ export function Donate({
             })
             log('result', result)
             toast.success('Transaction Confirmed')
+            setOpened(false)
         } catch (err) {
             toast.error(err.message)
         } finally {
@@ -67,10 +68,12 @@ export function Donate({
                     <button onClick={() => setOpened(false)} className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                     <div>
                         <h1 className="font-bold text-2xl my-6">Enter Amount</h1>
-                        <input onChange={(e) => setAmount(e.target.value)} type="number" placeholder="" className="input input-bordered w-full" />
+                        <label className="input input-bordered flex items-center gap-2 ">
+                            <input onChange={(e) => setAmount(e.target.value)} type="number" placeholder="" className="grow" />
+                            <span className="badge">SST</span>
+                        </label>
                         <div className="flex justify-between items-center my-4">
-                            <div>Avaiable:  {sstBalance}<span className="badge">SST</span>
-                            </div>
+                            <div>Avaiable:  {sstBalance}</div>
                             <div onClick={() => setAmount(String(sstBalance))} className="block badge badge-neutral cursor-pointer">Max</div>
                         </div>
                         <button
