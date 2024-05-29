@@ -69,7 +69,7 @@ export function Donate({
                     <div>
                         <h1 className="font-bold text-2xl my-6">Enter Amount</h1>
                         <label className="input input-bordered flex items-center gap-2 ">
-                            <input onChange={(e) => setAmount(e.target.value)} type="number" placeholder="" className="grow" />
+                            <input value={amount} onChange={(e) => setAmount(e.target.value)} type="number" placeholder="" className="grow" />
                             <span className="badge">SST</span>
                         </label>
                         <div className="flex justify-between items-center my-4">
