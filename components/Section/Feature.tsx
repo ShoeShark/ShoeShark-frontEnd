@@ -25,7 +25,7 @@ export default function Feature() {
                 }
 
             })
-                .to(image, i == images.length - 1 ? {} : { height: 0 })
+                .to(image, { height: 0 })
 
         });
 
@@ -87,7 +87,7 @@ export default function Feature() {
             </div>
         </div>
 
-        <div className="relative rounded-2xl overflow-hidden h-[75vh] w-[28rem] mt-5">
+        <div className="relative rounded-2xl overflow-hidden h-[75vh] w-[35rem] mt-5">
             <div className="panel bg-blue-500"></div>
             <div className="panel bg-red-500"></div>
             <div className="panel bg-orange-500"></div>
