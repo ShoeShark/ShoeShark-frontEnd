@@ -8,7 +8,7 @@ export const formatDate = (d: string) => {
     return new Date(d).toLocaleString()
 }
 
-export function getInitialContent(content: string) {
+export function getInitialContent(content: string, blockLength: number | undefined = undefined) {
     let initialContent: PartialBlock[] | undefined = []
     try {
         initialContent = JSON.parse(content)
@@ -16,7 +16,9 @@ export function getInitialContent(content: string) {
         initialContent = undefined
     }
     if (Array.isArray(initialContent) && initialContent.length > 0) {
-        initialContent = initialContent.slice(0, 3)
+        if (blockLength && blockLength > 0) {
+            initialContent = initialContent.slice(0, blockLength)
+        }
     }
     return initialContent
 }

@@ -26,6 +26,12 @@ const nextConfig = {
         config.externals.push("pino-pretty", "lokijs", "encoding");
         return config;
     },
+    images: {
+        domains: [
+            'p.qqan.com',
+            'img0.baidu.com',
+        ]
+    }
 };
 
 module.exports = nextConfig;
