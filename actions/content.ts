@@ -65,6 +65,33 @@ export const contentSave = async (body: BodyInit) => {
     return data
 }
 
+export const contentEdit = async (body: BodyInit) => {
+    // const b = JSON.stringify(body)
+    const res = await fetchWithAuth(`${BaseUrl}/content/edit`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body,
+        redirect: 'follow',
+    })
+    const data = await res.json()
+    return data
+}
+
+export const contentDelete = async (contentId: string) => {
+    // const b = JSON.stringify(body)
+    const res = await fetchWithAuth(`${BaseUrl}/content/${contentId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        redirect: 'follow',
+    })
+    const data = await res.json()
+    return data
+}
+
 export const commentSave = async (body: BodyInit) => {
     // const b = JSON.stringify(body)
     const res = await fetchWithAuth(`${BaseUrl}/content/comments`, {

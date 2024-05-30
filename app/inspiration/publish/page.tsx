@@ -7,6 +7,8 @@ import { contentSave } from "actions/content";
 import { useRouter } from "next/navigation";
 import { RichEditor } from "components/RichEditor";
 import { BlockNoteEditor } from "@blocknote/core";
+import { Switch } from "@nextui-org/react";
+import toast from "react-hot-toast";
 
 interface ISelectOption {
     value: string;
@@ -21,7 +23,9 @@ export default function InspirationPublishPage() {
 
     const [location, setLocation] = useState('')
     const [title, setTitle] = useState('')
+    const [isPublic, setIsPublic] = useState(true)
     const [cityList, setCityList] = useState<ISelectOption[]>([])
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         fetchCityList()
@@ -48,15 +52,19 @@ export default function InspirationPublishPage() {
         const body = {
             location,
             title,
-            isPublic: true,
+            isPublic,
             description,
         }
         const b = JSON.stringify(body)
         try {
+            setLoading(true)
             const data = await contentSave(b)
+            toast.success(`Story's Created`)
             router.push('/inspiration/list')
         } catch(err) {
             log('err', err)
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -67,7 +75,7 @@ export default function InspirationPublishPage() {
             <RichEditor ref={editorRef} editable={true} />
         </div>
 
-        <div>
+        <div className="flex items-center justify-between">
             <div className="w-1/2">
                 <WindowedSelect
                     required
@@ -79,10 +87,18 @@ export default function InspirationPublishPage() {
                 />
             </div>
 
+            <div className="w-1/2 text-right">
+                <Switch isSelected={isPublic} onValueChange={v => setIsPublic(v)} color="default">Is Public</Switch>
+            </div>
+
         </div>
 
         <div className="my-8 text-center">
-            <button className="btn bg-main hover:bg-main text-white" onClick={() => handleCreate()}>Create Story</button>
+            <button className="btn bg-main hover:bg-main text-white" onClick={() => handleCreate()}>
+                {
+                    loading ? <span className="loading loading-spinner"></span> : 'Create Story'
+                }
+            </button>
         </div>
     </div>
 }

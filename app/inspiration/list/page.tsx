@@ -82,7 +82,7 @@ export default function InspirationListPage() {
             </div>
         </div>
 
-        <div className=" fixed right-8 bottom-8 z-10 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer hover:scale-110 bg-main">
+        <div className=" fixed right-8 bottom-8 z-10 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer hover:scale-110 bg-main shadow-sm">
             <Link href='/inspiration/publish' className="icon-[ic--baseline-plus] text-white text-2xl">
             </Link>
         </div>

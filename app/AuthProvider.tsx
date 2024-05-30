@@ -1,7 +1,7 @@
 // context.js
 import { AuthenticationStatus, RainbowKitAuthenticationProvider, createAuthenticationAdapter } from '@rainbow-me/rainbowkit';
 import { fetchNonce, verify } from 'actions/content';
-import { getToken, removeToken, setToken } from 'actions/token';
+import { getToken, removeCookieAddress, removeToken, setCookieAddress, setToken } from 'actions/token';
 import { redirect } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import React from 'react';
@@ -52,11 +52,13 @@ export const AuthProvider = ({ children }) => {
                 const token = await verify(b)
                 log('verify token', token)
                 setToken(token)
+                setCookieAddress(address!)
                 setAuthStatus('authenticated')
                 verified = true
             } catch (err) {
                 log('verify error', err)
                 removeToken()
+                removeCookieAddress()
                 setAuthStatus('unauthenticated')
                 disconnect()
                 toast.error('Verify failed')
@@ -67,6 +69,7 @@ export const AuthProvider = ({ children }) => {
             log('signout call')
             setAuthStatus('unauthenticated')
             removeToken()
+            removeCookieAddress()
             router.replace("/")
         },
     });

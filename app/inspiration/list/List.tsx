@@ -30,7 +30,7 @@ export function List({
                             <div>
                                 <div>{item.title}</div>
                                 <div className="py-2">
-                                    <RichEditor initialContent={getInitialContent(item.description)} editable={false} />
+                                    <RichEditor initialContent={getInitialContent(item.description, 2)} editable={false} />
                                 </div>
                             </div>
                             <div>
