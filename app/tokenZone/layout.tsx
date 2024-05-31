@@ -15,38 +15,38 @@ export default function TokenZoneLayout({ children }: { children: React.ReactNod
     };
 
     return <div className="relative">
-        <Tabs
-            aria-label="Options"
-            className="flex py-6"
-            classNames={{
-                base: 'justify-center',
-                tabList: 'bg-white text-bold p-3',
-                cursor: 'shadow-[0_0_4px_#F31260]',
-                tabContent: 'font-bold'
-            }}
-            selectedKey={value}
-            onSelectionChange={handleTabChange}
-            color="danger"
-        >
-            <Tab
-                key="/tokenZone/tokenSwap"
-                title={
-                    <Link
-                        href="/tokenZone/tokenSwap"
-                    >
-                        Token Swap
-                    </Link>
-                } />
-            <Tab
-                key="/tokenZone/nftMarket"
-                title={
-                    <Link
-                        href="/tokenZone/nftMarket"
-                    >
-                        NFT Market
-                    </Link>
-                } />
-        </Tabs>
+        {/* <Tabs */}
+        {/*     aria-label="Options" */}
+        {/*     className="flex py-6" */}
+        {/*     classNames={{ */}
+        {/*         base: 'justify-center', */}
+        {/*         tabList: 'bg-white text-bold p-3', */}
+        {/*         cursor: 'shadow-[0_0_4px_#F31260]', */}
+        {/*         tabContent: 'font-bold' */}
+        {/*     }} */}
+        {/*     selectedKey={value} */}
+        {/*     onSelectionChange={handleTabChange} */}
+        {/*     color="danger" */}
+        {/* > */}
+        {/*     <Tab */}
+        {/*         key="/tokenZone/tokenSwap" */}
+        {/*         title={ */}
+        {/*             <Link */}
+        {/*                 href="/tokenZone/tokenSwap" */}
+        {/*             > */}
+        {/*                 Token Swap */}
+        {/*             </Link> */}
+        {/*         } /> */}
+        {/*     <Tab */}
+        {/*         key="/tokenZone/nftMarket" */}
+        {/*         title={ */}
+        {/*             <Link */}
+        {/*                 href="/tokenZone/nftMarket" */}
+        {/*             > */}
+        {/*                 NFT Market */}
+        {/*             </Link> */}
+        {/*         } /> */}
+        {/* </Tabs> */}
         {children}
     </div>
 

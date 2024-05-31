@@ -18,9 +18,14 @@ export default function Nav() {
             text: "Journey Tailor"
         },
         {
-            href: "/tokenZone",
+            href: "/tokenZone/tokenSwap",
             type: "/tokenZone/tokenSwap",
-            text: "Token Zone"
+            text: "Token Swap"
+        },
+        {
+            href: "/tokenZone/nftMarket",
+            type: "/tokenZone/nftMarket",
+            text: "NFT Market"
         }
     ]
 
