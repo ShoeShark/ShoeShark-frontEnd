@@ -3,7 +3,7 @@
 import Image from "next/image"
 import clsx from 'clsx'
 import { useAccount, useReadContract, useWriteContract } from "wagmi"
-import { Address, erc20Abi } from "viem"
+import { Address, erc20Abi, formatEther, formatUnits, parseEther, parseUnits } from "viem"
 import { log } from "utils/util"
 import toast from "react-hot-toast"
 import { publicClient } from "config"
@@ -17,7 +17,7 @@ export function Donate({
 }) {
     const [opened, setOpened] = useState(false)
     const [amount, setAmount] = useState('')
-    const [sstBalance, setSstBalance] = useState(0)
+    const [sstBalance, setSstBalance] = useState('')
     const { writeContractAsync } = useWriteContract()
     const { address } = useAccount()
     const [loading, setLoading] = useState(false)
@@ -29,11 +29,19 @@ export function Donate({
     })
 
     useEffect(() => {
-        setSstBalance(Number(result.data || 0))
+        if (result.data) {
+            setSstBalance(formatUnits(result.data, 18) || '0')
+        }
     }, [result.data])
 
+    useEffect(() => {
+        if (!opened) {
+            setAmount('')
+        }
+    }, [opened])
+
     const handleDonate = async () => {
-        if (BigInt(amount) > BigInt(sstBalance)) {
+        if (parseFloat(amount) > parseFloat(sstBalance)) {
             toast.error('Amount is not valid')
             return
         }
@@ -45,7 +53,7 @@ export function Donate({
                 functionName: 'transfer',
                 args: [
                     author,
-                    BigInt(amount),
+                    parseUnits(amount, 18)
                 ],
             })
             const result = await publicClient.waitForTransactionReceipt({
@@ -74,7 +82,7 @@ export function Donate({
                         </label>
                         <div className="flex justify-between items-center my-4">
                             <div>Avaiable:  {sstBalance}</div>
-                            <div onClick={() => setAmount(String(sstBalance))} className="block badge badge-neutral cursor-pointer">Max</div>
+                            <div onClick={() => setAmount(sstBalance)} className="block badge badge-neutral cursor-pointer">Max</div>
                         </div>
                         <button
                             disabled={loading}
