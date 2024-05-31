@@ -10,8 +10,8 @@ export default async function MyPointsPage() {
 
     const signData = logData?.records?.find(item => {
         const oneDay = 1000 * 60 * 60 * 24;
-        const expire = Date.now() - new Date(item.CreatedAt).getTime() <= oneDay
-        return item.Source == "SIGN_IN" && expire
+        const expire = Date.now() - new Date(item.createdAt).getTime() <= oneDay
+        return item.source == "签到" && expire
     })
 
     return (
@@ -19,7 +19,10 @@ export default async function MyPointsPage() {
             <div className="card w-96 bg-base-100 shadow-[0_0_8px_rgba(0,0,0,.1)]">
                 <div className="card-body py-6 gap-0">
                     <div className="flex justify-between">
-                        <h3 className="card-title">My Points: {pointData.linkPoints}</h3>
+                        <div className="flex flex-col">
+                            <h3 className="card-title">My Points: {pointData.linkPoints} </h3>
+                            <h3 className="text-md">(Not on-chain: {pointData.points})</h3>
+                        </div>
                         <SignIn signed={!!signData} />
                     </div>
                     <details className="collapse collapse-arrow rounded-none">

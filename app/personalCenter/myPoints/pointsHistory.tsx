@@ -26,9 +26,9 @@ export default function PointsHistory({
                         {
                             records?.map(item =>
                                 <tr>
-                                    <td>{item.Source}</td>
-                                    <td>{item.Points}</td>
-                                    <td>{new Date(item.CreatedAt).toLocaleString()}</td>
+                                    <td>{item.source}</td>
+                                    <td>{item.points}</td>
+                                    <td>{item.createdAt}</td>
                                 </tr>
                             )
                         }

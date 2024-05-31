@@ -11,7 +11,7 @@ export const getTxHistory = async (address: string, tokenCA: string) => {
         address,
         startblock: '0',
         endblock: '99999999',
-        sort: "dsc",
+        sort: "desc",
         apikey: API_KEY as string
     })
     const res = await fetch(`https://api-testnet.snowscan.xyz/api/?${params.toString()}`, {

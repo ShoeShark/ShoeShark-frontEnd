@@ -29,7 +29,7 @@ export default function SwapBox() {
         notification.success({
             message: <div className="flex flex-col">
                 <span>{message}</span>
-                <Link href={`https://testnet.snowscan.xyz/tx/${txHash}`} target="_blank" className="link link-hover">viem on explorer</Link>
+                <Link href={`https://testnet.snowscan.xyz/tx/${txHash}`} target="_blank" className="link link-hover">view on explorer</Link>
             </div>,
             type: isSuccess ? "success" : "error",
             placement: "topRight",

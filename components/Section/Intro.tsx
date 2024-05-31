@@ -22,14 +22,14 @@ export default function Intro() {
             "section-intro bg-gradient-to-b from-[#fccb90] to-[#fdcbf1]",
             "flex items-center h-[100vh] overflow-hidden "
         ])}>
-        <div className="container">
+        <div className="section-intro-container">
             <Atropos
                 className="atropos-banner"
                 highlight={false}
                 onEnter={() => console.log("enter")}
             >
                 <img
-                    className="atropos-banner-spacer bg-gray-100 section-intro-img"
+                    className="atropos-banner-spacer section-intro-img"
                     data-atropos-offset="-4.5"
                     src={"https://img2.imgtp.com/2024/05/29/4e5T46bE.png"}
                     alt=""

@@ -14,3 +14,5 @@ export const wagmiConfig = getDefaultConfig({
 export const chainConfig = {
     targetNetworks: chains,
 };
+
+
