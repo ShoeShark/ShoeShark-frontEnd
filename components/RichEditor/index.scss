@@ -1,0 +1,13 @@
+.block-editable {
+
+    .ProseMirror {
+        min-height: 28rem;
+    }
+}
+
+.block-onlyview {
+    .ProseMirror {
+        padding-left: 4px;
+    }
+
+}

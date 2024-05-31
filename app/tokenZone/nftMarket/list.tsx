@@ -8,6 +8,7 @@ import { NFT_MARKET } from 'contracts/NFTMarket';
 import { Address, erc20Abi, parseUnits } from 'viem';
 import { SST } from 'config/constants/token';
 import { notification } from "antd";
+import MotionLayout from "components/MotionLayout";
 
 type Props = {
     listData?: Record<string, any>[]
@@ -196,7 +197,7 @@ export default function MarketList({ listData = [], refetchList }: Props) {
     };
 
     return (
-        <div className="w-full px-20 max-h-svh min-h-96">
+        <MotionLayout className="w-full px-20 max-h-svh min-h-96">
             <div className="flex mb-3.5 justify-between">
 
                 <div className="flex justify-end w-full">
@@ -215,10 +216,10 @@ export default function MarketList({ listData = [], refetchList }: Props) {
                 </div>
             </div>
 
-            <div className="w-full max-h-full min-h-[34rem] bg-[#fff] rounded-lg shadow-md flex flex-wrap gap-5 p-5">
+            <div className="w-full max-h-full min-h-[34rem] bg-[#fff] rounded-lg shadow-md grid grid-cols-5 gap-5 p-5">
                 {
                     currentData.map((item) => (
-                        <Card isFooterBlurred key={item.id} className="h-72 w-[12rem]">
+                        <Card isFooterBlurred key={item.id} className="h-64">
                             <Image
                                 removeWrapper
                                 alt="Card example background"
@@ -271,7 +272,7 @@ export default function MarketList({ listData = [], refetchList }: Props) {
                 variant="light"
                 onChange={setCurrentPage}
             />
-        </div>
+        </MotionLayout>
     );
 }
 

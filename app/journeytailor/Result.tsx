@@ -104,12 +104,12 @@ export default function Result({ result, onBack }: {
 
     return <div>
         <div className='px-8 pt-8'>
-            <div onClick={() => onBack()} className="icon-[ic--baseline-arrow-back] cursor-pointer text-3xl text-[#f31260]"></div>
+            <div onClick={() => onBack()} className="icon-[ic--baseline-arrow-back] cursor-pointer text-3xl"></div>
         </div>
 
-        <div className="flex items-start px-48 pt-12">
+        <div className="grid grid-cols-2 items-start px-48 pt-12">
             {/* left */}
-            <section className="w-[640px] flex items-center justify-around">
+            <section className=" flex items-center justify-around">
                 <ul className="list-none w-full">
                     {
                         suggestionArray.map((suggestion, index) => {
@@ -117,8 +117,8 @@ export default function Result({ result, onBack }: {
                                 key={suggestion.date}
                                 onClick={() => onSelect(index)}
                                 className={clsx([
-                                    'flex justify-between items-center rounded-btn py-2 px-4 mb-4 cursor-pointer',
-                                    index === selected ? 'border-2 border-[#f31260]' : 'border border-gray-300',
+                                    'flex justify-between items-center rounded-btn py-2 px-4 mb-4 cursor-pointer transition-all',
+                                    index === selected ? 'shadow-[0_0_0px_2px_#f32160]' : 'shadow-[0_0_0px_2px_#00000020]',
                                 ])}
                             >
                                 <div>
@@ -132,17 +132,15 @@ export default function Result({ result, onBack }: {
                 </ul>
                 <div className="icon-[ic--round-double-arrow] mx-12 text-6xl text-gray-400"></div>
             </section>
-
-            {/* right */}
             <section>
                 {
                     activities.map((activity: IActivity) => {
                         return <div className='text-gray-500 w-full' key={activity.order}>
                             {/* card content */}
                             <div className={clsx([
-                                    'bg-[#f31260bb] card text-white',
-                                    ' w-full rounded-lg p-4',
-                                ])}
+                                'bg-[#f31260bb] card text-white',
+                                ' w-full rounded-lg p-4',
+                            ])}
                             >
                                 <div className='text-lg font-bold mb-2'>{activity.place}</div>
                                 <div>{activity.text}</div>

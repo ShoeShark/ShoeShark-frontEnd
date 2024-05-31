@@ -1,12 +1,30 @@
 "use client"
 
 import { NFT_MARKET } from 'contracts/NFTMarket';
-import List from "./list";
-import { useWatchContractEvent } from 'wagmi';
 import { formatUnits } from 'viem';
 import { publicClient } from 'config';
+import dynamic from 'next/dynamic';
+import { motion } from 'framer-motion';
+
+const WithLoadingList = dynamic(
+    () => import('./list'),
+    {
+        loading: () => <div className="w-full mx-20 mt-14 max-h-full min-h-[34rem] bg-[#fff] rounded-lg shadow-md grid grid-cols-5 gap-5 p-5">
+            {
+                Array(10).fill("").map(() =>
+                    <div className="skeleton h-64"></div>
+                )
+            }
+        </div>
+    }
+)
 
 export default function NFTMarket() {
+    const variants = {
+        hidden: { opacity: 0 },
+        enter: { opacity: 1 },
+        exit: { opacity: 0 },
+    }
 
     async function getData() {
         const nftsData = await publicClient.readContract({
@@ -47,7 +65,7 @@ export default function NFTMarket() {
 
     return (
         <div className="flex w-screen justify-center mt-10">
-            <List listData={metadataArr} refetchList={getData} />
+            <WithLoadingList listData={metadataArr} refetchList={getData} />
         </div>
     );
 }

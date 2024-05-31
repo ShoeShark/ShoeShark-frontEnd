@@ -21,6 +21,7 @@ const config: Config = {
                     warning: "#FFCB45",
                     error: "#F03D3D",
                     "--rounded-btn": "12px",
+                    "--fallback-b3": "#cfcfcf54",
                     ".link": {
                         textUnderlineOffset: "2px",
                     },
@@ -39,13 +40,15 @@ const config: Config = {
         extend: {
             boxShadow: {
                 center: "0 0 12px -2px rgb(0 0 0 / 0.05)",
+                centermd: "0 0 12px 2px rgb(0 0 0 / 0.05)",
+                centerlg: "0 0 22px 2px rgb(0 0 0 / 0.05)",
             },
             animation: {
                 "pulse-fast": "pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite",
             },
             colors: {
                 main: "#F31260"
-            }
+            },
         },
     },
     darkMode: "class",

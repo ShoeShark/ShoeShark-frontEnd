@@ -2,12 +2,11 @@
 
 import { contentList } from "actions/content";
 import { Filter } from "./Filter";
-import { log } from "utils/util";
-import { List } from "./List";
 import { Skeleton, Spinner } from "@nextui-org/react";
 import { notification } from "utils/notification";
 import clsx from "clsx";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 
 const pageSize = 20
 
@@ -18,6 +17,19 @@ interface ISearchOption {
     title?: string,
     description?: string,
 }
+
+const WithLoadingList = dynamic(
+    () => import('./List'),
+    {
+        loading: () => <div className="w-full ml-8 py-10 px-8 max-h-full min-h-[34rem] bg-[#fff] rounded-lg shadow-md grid grid-cols-1 md:grid-cols-2 gap-5">
+            {
+                Array(10).fill("").map(() =>
+                    <div className="skeleton h-64"></div>
+                )
+            }
+        </div>
+    }
+)
 
 export default function InspirationListPage() {
     const [loading, setLoading] = useState(false)
@@ -59,13 +71,14 @@ export default function InspirationListPage() {
     }
 
     return <div className="w-full">
-        <h1 className="text-center text-5xl font-bold mt-14 mb-10">Discover travel inspiration</h1>
+        <h1 className="text-center text-4xl font-bold mt-10 mb-6">Discover travel inspiration</h1>
 
         <div className="flex p-4">
             <Filter loading={loading} onFilter={handleFilter} />
 
             <div className="w-full">
-                <List loading={loading} list={list} />
+                <WithLoadingList loading={loading} list={list} />
+
                 <footer className="w-[120px] mx-auto border-2 rounded-badge flex items-center justify-between px-6 py-2 mt-6">
                     <div className="cursor-pointer flex items-center justify-center" onClick={() => handlePageChange(-1)}>
                         <span
@@ -82,7 +95,7 @@ export default function InspirationListPage() {
             </div>
         </div>
 
-        <div className=" fixed right-8 bottom-8 z-10 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer hover:scale-110 bg-main shadow-sm">
+        <div className="shadow-[0_0_22px_2px_#F31260] transition-all fixed right-8 bottom-8 z-10 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer hover:scale-110 bg-main shadow-sm">
             <Link href='/inspiration/publish' className="icon-[ic--baseline-plus] text-white text-2xl">
             </Link>
         </div>
