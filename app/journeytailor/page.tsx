@@ -32,15 +32,19 @@ export default function JourneyTailor() {
     const handleGenerate = async (props: any) => {
         log('props', props)
         setLoading(true)
-        const f = new FormData()
-        Object.entries(props).forEach(item => {
-            const [k, v] = item
-            f.append(k, v as any)
-        })
+        // const f = new FormData()
+        // Object.entries(props).forEach(item => {
+        //     const [k, v] = item
+        //     f.append(k, v as any)
+        // })
         // return
         try {
-            const data = await fetchAIPlan(f)
-            setResult(data)
+            const res = await fetch('/api/plan', {
+                method: 'POST',
+                body: JSON.stringify(props)
+            })
+            const data = await res.json()
+            setResult(data.data)
             setComponentIndex(1)
         } catch(err) {
             toast.error(err.message)
