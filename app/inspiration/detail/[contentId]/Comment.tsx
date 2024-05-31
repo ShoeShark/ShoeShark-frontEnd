@@ -3,8 +3,7 @@
 import { Avatar } from "@nextui-org/react"
 import { commentList, commentSave } from "actions/content";
 import clsx from "clsx";
-import toast from "react-hot-toast";
-import { log } from "utils/util";
+import { generateColorFromAddress } from "utils/util";
 
 export function Comment({
     contentId
@@ -37,7 +36,7 @@ export function Comment({
     }
 
     return <div className="mx-32 mt-14">
-        <div className="relative inline-block w-full">
+        <div className="relative inline-block w-1/2">
             <textarea value={comment} onChange={e => setComment(e.target.value)} className="textarea textarea-secondary border-[#f31260] focus:outline-none  focus:border-[#f31260] resize-none w-full" rows={3}>
             </textarea>
             <div
@@ -53,9 +52,11 @@ export function Comment({
         <div className="mt-8">
             {
                 comments.map((item: any) => {
-                    return <div key={item.createdAt} className="card shadow-md rounded-lg relative p-4 mx-12 my-4 bg-gradient-to-r from-[#fdcbf155] to-[#ace0f955]">
+                    return <div key={item.createdAt} className="card shadow-md rounded-lg relative p-4 mx-12 my-4 bg-white from-[#ff0844] to-[#ffb199]">
                         <div className="absolute left-0 top-0 -translate-x-1/2 translate-y-1/2">
-                            <Avatar name={item.accountAddress} className="bg-[#f31260cc] text-white" src="" />
+                            <div className="rounded-full w-8 h-8" style={{
+                                backgroundImage: generateColorFromAddress(item.accountAddress)
+                            }}></div>
                         </div>
                         <div className="text-left pl-4">
                             <div className="font-bold">{item.accountAddress}</div>

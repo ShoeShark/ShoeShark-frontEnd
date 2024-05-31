@@ -1,5 +1,6 @@
 'use client'
 
+import { Input } from "@nextui-org/react";
 import clsx from "clsx";
 import { useRouter, useSearchParams } from "next/navigation"
 import nProgress from "nprogress";
@@ -52,7 +53,7 @@ export function Filter({
         onFilter(p)
     }
 
-    return <div className="self-start w-[240px] card bg-base-100 shadow-xl">
+    return <div className="self-start sticky top-24 w-[240px] card bg-base-100 shadow-xl">
         <div className="card-body">
             {/* <div>
                 <p className="font-bold my-2">Sort By</p>
@@ -63,19 +64,17 @@ export function Filter({
 
             <div>
                 <p className="font-bold my-2">Title</p>
-                <input
+                <Input
                     onChange={e => setTitle(e.target.value)}
                     type="text"
-                    className="input input-bordered w-full input-sm"
                 />
             </div>
 
             <div>
                 <p className="font-bold my-2">Description</p>
-                <input
+                <Input
                     onChange={e => setDescription(e.target.value)}
                     type="text"
-                    className="input input-bordered w-full input-sm"
                 />
             </div>
 
@@ -83,6 +82,7 @@ export function Filter({
                 <p className="font-bold my-2">Destination</p>
                 <WindowedSelect
                     required
+                    className="rounded-md"
                     placeholder="location"
                     name="city"
                     onChange={(item: ISelectOption) => setLocation(item.value)}

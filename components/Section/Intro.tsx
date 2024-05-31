@@ -1,11 +1,13 @@
 "use client";
-import "./Intro.scss"
 
+import "./Intro.scss";
+import Background from "public/bg.png";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import clsx from "clsx";
 import Atropos from "atropos/react";
 import "atropos/atropos.css";
+import Image from "next/image";
 
 export default function Intro() {
 
@@ -26,12 +28,11 @@ export default function Intro() {
             <Atropos
                 className="atropos-banner"
                 highlight={false}
-                onEnter={() => console.log("enter")}
             >
-                <img
+                <Image
                     className="atropos-banner-spacer section-intro-img"
                     data-atropos-offset="-4.5"
-                    src={"https://img2.imgtp.com/2024/05/29/4e5T46bE.png"}
+                    src={Background}
                     alt=""
                 />
                 <img

@@ -7,7 +7,7 @@ import { contentSave } from "actions/content";
 import { useRouter } from "next/navigation";
 import { RichEditor } from "components/RichEditor";
 import { BlockNoteEditor } from "@blocknote/core";
-import { Switch } from "@nextui-org/react";
+import { Input, Switch } from "@nextui-org/react";
 import toast from "react-hot-toast";
 
 interface ISelectOption {
@@ -61,7 +61,7 @@ export default function InspirationPublishPage() {
             const data = await contentSave(b)
             toast.success(`Story's Created`)
             router.push('/inspiration/list')
-        } catch(err) {
+        } catch (err) {
             log('err', err)
         } finally {
             setLoading(false)
@@ -69,7 +69,7 @@ export default function InspirationPublishPage() {
     }
 
     return <div className="p-12">
-        <input type="text" placeholder="title" onChange={e => setTitle(e.target.value)} className="input input-bordered w-full" />
+        <Input type="text" placeholder="title" onChange={e => setTitle(e.target.value)} variant="bordered" />
 
         <div className="my-4">
             <RichEditor ref={editorRef} editable={true} />
@@ -87,16 +87,16 @@ export default function InspirationPublishPage() {
                 />
             </div>
 
-            <div className="w-1/2 text-right">
-                <Switch isSelected={isPublic} onValueChange={v => setIsPublic(v)} color="default">Is Public</Switch>
-            </div>
+            {/* <div className="w-1/2 text-right"> */}
+            {/*     <Switch isSelected={isPublic} onValueChange={v => setIsPublic(v)} color="default">Is Public</Switch> */}
+            {/* </div> */}
 
         </div>
 
         <div className="my-8 text-center">
             <button className="btn bg-main hover:bg-main text-white" onClick={() => handleCreate()}>
                 {
-                    loading ? <span className="loading loading-spinner"></span> : 'Create Story'
+                    loading ? <span className="loading loading-spinner"></span> : 'Create'
                 }
             </button>
         </div>

@@ -2,6 +2,7 @@
 
 import "@blocknote/core/fonts/inter.css";
 import "@blocknote/mantine/style.css";
+import "./index.scss";
 import { BlockNoteView } from "@blocknote/mantine";
 import { DefaultReactSuggestionItem, SuggestionMenuController, getDefaultReactSlashMenuItems, useCreateBlockNote } from "@blocknote/react";
 import { BlockNoteEditor, PartialBlock, filterSuggestionItems } from "@blocknote/core";
@@ -56,7 +57,7 @@ export const RichEditor = forwardRef(({
                     const res = await uploadImage(formData)
                     const url = `${process.env.NEXT_PUBLIC_OSS_BASE_URL}${res.data}`
                     return url
-                } catch(err) {
+                } catch (err) {
                     log('err', err)
                     toast.error(err.message)
                     return ''
@@ -70,6 +71,7 @@ export const RichEditor = forwardRef(({
     }))
 
     return <BlockNoteView
+        className={editable ? "block-editable" : "block-onlyview"}
         editable={editable}
         editor={editor}
         slashMenu={false}
