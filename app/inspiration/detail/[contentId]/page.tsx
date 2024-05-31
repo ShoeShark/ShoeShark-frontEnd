@@ -19,7 +19,7 @@ export default async function InspirationDetailPage({
 
     return <div className="w-full">
         <header>
-            <h1 className="text-center text-5xl font-bold mt-8 mb-4">title</h1>
+            <h1 className="text-center text-5xl font-bold mt-8 mb-4">{detail.title}</h1>
             <div className="flex justify-center items-center">
                 <div className="flex gap-2 items-center pr-14">
                     <div className="rounded-full w-5 h-5" style={{
