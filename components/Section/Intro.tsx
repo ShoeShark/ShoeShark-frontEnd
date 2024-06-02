@@ -44,7 +44,7 @@ export default function Intro() {
                 <h1 data-atropos-offset="4" className="section-intro-title">Embark On Journeys Fueled by Inspiration.</h1>
             </Atropos>
         </div>
-        <div className="section-intro-scroll flex items-center absolute bottom-20 right-20">
+        <div className="section-intro-scroll font-bold flex items-center absolute bottom-20 right-20">
             <div className="text-md">SCROLL DOWN</div>
             <div className="animate-bounce flex flex-col ml-4">
                 <span className="icon-[ic--round-keyboard-double-arrow-down] w-[35px] h-[35px] relative top-[16px]"></span>

@@ -52,6 +52,13 @@ export function Filter({
         }
         onFilter(p)
     }
+    const handleClear = () => {
+
+        setTitle("")
+        setDescription("")
+
+        handleFilter()
+    }
 
     return <div className="self-start sticky top-24 w-[240px] card bg-base-100 shadow-xl">
         <div className="card-body">
@@ -66,6 +73,7 @@ export function Filter({
                 <p className="font-bold my-2">Title</p>
                 <Input
                     onChange={e => setTitle(e.target.value)}
+                    value={title}
                     type="text"
                 />
             </div>
@@ -74,22 +82,23 @@ export function Filter({
                 <p className="font-bold my-2">Description</p>
                 <Input
                     onChange={e => setDescription(e.target.value)}
+                    value={description}
                     type="text"
                 />
             </div>
 
-            <div>
-                <p className="font-bold my-2">Destination</p>
-                <WindowedSelect
-                    required
-                    className="rounded-md"
-                    placeholder="location"
-                    name="city"
-                    onChange={(item: ISelectOption) => setLocation(item.value)}
-                    options={cityList}
-                    windowThreshold={0}
-                />
-            </div>
+            {/* <div> */}
+            {/*     <p className="font-bold my-2">Destination</p> */}
+            {/*     <WindowedSelect */}
+            {/*         required */}
+            {/*         className="rounded-md" */}
+            {/*         placeholder="location" */}
+            {/*         name="city" */}
+            {/*         onChange={(item: ISelectOption) => setLocation(item.value)} */}
+            {/*         options={cityList} */}
+            {/*         windowThreshold={0} */}
+            {/*     /> */}
+            {/* </div> */}
 
 
             <button
@@ -100,6 +109,13 @@ export function Filter({
                 <span className={clsx([
                     loading && 'loading',
                 ])}>Filter</span>
+            </button>
+            <button
+                disabled={loading}
+                onClick={() => handleClear()}
+                className="btn mt-2"
+            >
+                <span >Clear</span>
             </button>
         </div>
     </div>
