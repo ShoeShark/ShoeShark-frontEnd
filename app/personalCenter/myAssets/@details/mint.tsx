@@ -6,8 +6,6 @@ import { useAccount, useReadContract, useWriteContract } from "wagmi";
 import { SHOESHARK_NFT } from "contracts/NFT";
 import { publicClient } from "config";
 import toast from "react-hot-toast";
-import { bytesToHex, fromBytes, stringToBytes, stringToHex, toBytes, toHex } from "viem";
-import { JsonRpcProvider, Wallet, Contract } from "ethers";
 
 export default function App() {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -22,7 +20,7 @@ export default function App() {
             setProof(data.proof.map((str: string) => `0x${str}`))
         }
     }
-    const { data: isMinted } = useReadContract({
+    const { data: isMinted, refetch } = useReadContract({
         ...SHOESHARK_NFT,
         functionName: "s_HasMinted",
         args: [address!]
@@ -38,6 +36,7 @@ export default function App() {
         if (tx) {
             const { status } = await publicClient.waitForTransactionReceipt({ hash: tx })
             if (status == "success") {
+                await refetch()
                 toast.success("mint success");
                 return
             }
