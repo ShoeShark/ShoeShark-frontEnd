@@ -150,8 +150,8 @@ export default function Assets() {
             {
                 nftList.map(item =>
                     <div key={item.name} className="card card-compact w-[12rem] bg-base-100 shadow-xl">
-                        <figure className="overflow-hidden">
-                            <img className="hover:scale-105 transition" src={item.image} alt="Shoes" />
+                        <figure className="overflow-hidden ">
+                            <img className="hover:scale-105 transition skeleton rounded-none w-[12rem] h-[12rem]" src={item.image} alt="Shoes" />
                         </figure>
                         <div className="card-body !py-2 !pb-1 gap-0">
                             <h2 className="card-title text-lg">{item.name}</h2>

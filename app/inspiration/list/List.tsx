@@ -2,7 +2,7 @@ import { formatDate, generateColorFromAddress, getInitialContent, log } from "ut
 import { useRouter } from "next/navigation";
 import { RichEditor } from "components/RichEditor";
 import Link from "next/link";
-import { formatAddress } from "utils/format";
+import { formatAddress, formatBlockTimestamp } from "utils/format";
 import MotionLayout from "components/MotionLayout";
 import clsx from "clsx";
 
@@ -49,7 +49,7 @@ export default function List({
                                     }}></div>
                                     <div className="truncate ">{formatAddress(item.accountAddress)}</div>
                                 </div>
-                                <div className="truncate w-[160px]">{item.createdAt}</div>
+                                <div className="truncate w-[160px]">{formatBlockTimestamp(item.createdAt)}</div>
                             </div>
                         </div>
                     </div>

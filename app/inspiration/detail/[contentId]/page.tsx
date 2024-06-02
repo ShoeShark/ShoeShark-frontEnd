@@ -3,7 +3,7 @@ import { Comment } from "./Comment";
 import { Donate } from "./Donate";
 import { generateColorFromAddress, getInitialContent, log } from "utils/util";
 import { RichEditor } from "components/RichEditor";
-import { formatAddress } from "utils/format";
+import { formatAddress, formatBlockTimestamp } from "utils/format";
 import BackBtn from "components/BackBtn";
 
 export default async function InspirationDetailPage({
@@ -28,7 +28,7 @@ export default async function InspirationDetailPage({
                     }}></div>
                     <div className="truncate ">{formatAddress(detail.accountAddress)}</div>
                 </div>
-                <div className="text-gray-500">{detail.createdAt}</div>
+                <div className="text-gray-500">{formatBlockTimestamp(detail.createdAt)}</div>
             </div>
         </header>
 
