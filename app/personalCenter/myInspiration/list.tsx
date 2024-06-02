@@ -3,6 +3,7 @@ import Action from "./action"
 import { getInitialContent, log } from "utils/util";
 import Image from "next/image";
 import { PartialBlock } from "@blocknote/core";
+import { RichEditor } from "components/RichEditor";
 
 type props = {
     listdata: Record<string, any>[]
@@ -33,14 +34,17 @@ export default function List({ listdata }: props) {
         <ScrollShadow className="w-full h-[calc(100vh-14rem)] px-8">
             {
                 listdata?.map(data =>
-                    <div key={data.contentId} className="card my-4 flex flex-row w-full shadow-[0_0_12px_2px_#00000020] bg-base-100 shadow-md">
-                        <figure className="pl-8 py-4 flex items-center w-[14%]">
-                            <Image src={imageFromContent(data.description)} width={28} height={28} alt="img" className="rounded-xl w-28 h-28" />
-                            {/* <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" className="rounded-xl w-28 h-28" /> */}
-                        </figure>
-                        <div className="card-body p-6 w-[86%]">
+                    <div key={data.contentId} className="card my-4 flex flex-row w-full bg-base-100 shadow-centerlg">
+                        {/* <figure className="pl-8 py-4 flex items-center w-[14%]"> */}
+                        {/* <Image src={imageFromContent(data.description)} width={28} height={28} alt="img" className="rounded-xl w-28 h-28" /> */}
+                        {/* <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" className="rounded-xl w-28 h-28" /> */}
+                        {/* </figure> */}
+                        <div className="card-body p-6 ">
                             <h2 className="card-title">{data.title}</h2>
-                            <div className="truncate w-full overflow-hidden">{textFromContent(data.description)}</div>
+                            <div className="py-2 max-h-32 overflow-hidden w-full">
+                                <RichEditor initialContent={getInitialContent(data.description, 2)} editable={false} />
+                            </div>
+                            {/* <div className="truncate w-full overflow-hidden">{textFromContent(data.description)}</div> */}
                         </div>
                         <div className="card-actions items-end absolute bottom-4 right-4">
                             <Action contentId={data.contentId} />

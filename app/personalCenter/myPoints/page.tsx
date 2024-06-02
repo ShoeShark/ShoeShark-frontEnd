@@ -7,6 +7,7 @@ export default async function MyPointsPage() {
         pointsLog(),
         getPoints()
     ])
+    console.log(logData)
 
     const signData = logData?.records?.find(item => {
         const oneDay = 1000 * 60 * 60 * 24;

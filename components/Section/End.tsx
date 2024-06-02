@@ -43,7 +43,7 @@ export default function End() {
     return <section className="section-end overflow-hidden flex flex-col justify-between h-[100vh] bg-gradient-to-b from-[#fbfcdb] to-[#d4fc79] pt-28">
         <div className="flex gap-4 px-20 drop-shadow">
             <div className="section-end-text w-1/2">
-                <h2 className=" text-[40px] font-bold">Embark On Journeys Fueled by Inspiration.</h2>
+                <h2 className=" text-[40px] font-bold">Discover. Share. Inspire.</h2>
                 <p className="section-end-desc ">Join us in redefining the way we explore the world. On Shoe Sharke, every traveler is both a guide and an explorer, a teacher and a student, bound by the shared joy of discovery.</p>
             </div>
             <div className="section-end-arrow flex w-1/2 justify-end items-end gap-5">

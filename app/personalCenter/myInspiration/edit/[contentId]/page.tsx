@@ -1,4 +1,4 @@
-import { contentDetail } from "actions/content";
+import { getContentByHash } from "actions/content";
 import Link from "next/link";
 import { MyInspirationEdit } from "./Edit";
 
@@ -11,8 +11,7 @@ export default async function MyInspirationEditPage({
         contentId: string;
     }
 }) {
-    const res = await contentDetail(contentId)
-    const detail = res.data
+    const detail = await getContentByHash(contentId)
 
     return <div className=" overflow-y-auto h-full">
         <div className='px-8 pt-8'>

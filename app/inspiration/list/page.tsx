@@ -1,12 +1,15 @@
 'use client'
 
-import { contentList } from "actions/content";
+import { contentList, getContentByHash } from "actions/content";
 import { Filter } from "./Filter";
 import { Skeleton, Spinner } from "@nextui-org/react";
 import { notification } from "utils/notification";
 import clsx from "clsx";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import { publicClient } from "config";
+import { CONTENT_MANAGER } from "contracts/ContentManager"
+import { formatBlockTimestamp } from "utils/format";
 
 const pageSize = 20
 
@@ -18,22 +21,24 @@ interface ISearchOption {
     description?: string,
 }
 
+const LoadingList = () => <div className="w-full ml-8 py-10 px-8 max-h-full min-h-[34rem] bg-[#fff] rounded-lg shadow-md grid grid-cols-1 md:grid-cols-2 gap-5">
+    {
+        Array(10).fill("").map(() =>
+            <div className="skeleton h-64"></div>
+        )
+    }
+</div>
+
 const WithLoadingList = dynamic(
     () => import('./List'),
     {
-        loading: () => <div className="w-full ml-8 py-10 px-8 max-h-full min-h-[34rem] bg-[#fff] rounded-lg shadow-md grid grid-cols-1 md:grid-cols-2 gap-5">
-            {
-                Array(10).fill("").map(() =>
-                    <div className="skeleton h-64"></div>
-                )
-            }
-        </div>
+        loading: LoadingList
     }
 )
 
 export default function InspirationListPage() {
     const [loading, setLoading] = useState(false)
-    const [list, setList] = useState([])
+    const [list, setList] = useState<Array<Record<string, any>>>([])
     const [searchOption, setSearchOption] = useState<ISearchOption>({
         page: 1,
         page_size: pageSize,
@@ -43,10 +48,24 @@ export default function InspirationListPage() {
         search()
     }, [searchOption])
 
+    async function getContentList() {
+        const hash_list = await publicClient.readContract({
+            ...CONTENT_MANAGER,
+            functionName: "getAllContent"
+        })
+
+        const list = await Promise.all(
+            hash_list.map(getContentByHash)
+        )
+
+        return list
+    }
+
     const search = async () => {
         setLoading(true)
-        const res = await contentList(searchOption)
-        setList(res.data.records)
+        const list = await getContentList()
+        // const res = await contentList(searchOption)
+        setList(list)
         setLoading(false)
     }
 
@@ -77,7 +96,9 @@ export default function InspirationListPage() {
             <Filter loading={loading} onFilter={handleFilter} />
 
             <div className="w-full">
-                <WithLoadingList loading={loading} list={list} />
+                {
+                    loading ? <LoadingList /> : <WithLoadingList loading={loading} list={list} />
+                }
 
                 <footer className="w-[120px] mx-auto border-2 rounded-badge flex items-center justify-between px-6 py-2 mt-6">
                     <div className="cursor-pointer flex items-center justify-center" onClick={() => handlePageChange(-1)}>

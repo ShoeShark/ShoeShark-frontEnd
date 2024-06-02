@@ -9,6 +9,10 @@ import { RichEditor } from "components/RichEditor";
 import { BlockNoteEditor } from "@blocknote/core";
 import { Input, Switch } from "@nextui-org/react";
 import toast from "react-hot-toast";
+import { uploadToIpfs } from "actions/ipfs";
+import { useAccount, useWriteContract } from "wagmi";
+import { CONTENT_MANAGER } from "contracts/ContentManager"
+import { publicClient } from "config";
 
 interface ISelectOption {
     value: string;
@@ -20,6 +24,7 @@ export default function InspirationPublishPage() {
     const editorRef = useRef<{
         getEditor: () => BlockNoteEditor
     }>()
+    const { address } = useAccount()
 
     const [location, setLocation] = useState('')
     const [title, setTitle] = useState('')
@@ -67,6 +72,43 @@ export default function InspirationPublishPage() {
             setLoading(false)
         }
     }
+    const { writeContract } = useWriteContract()
+
+    async function postToIpfs() {
+        if (!editorRef.current) return
+        const editor = editorRef.current.getEditor()
+        const description = JSON.stringify(editor.document)
+        const content = editor.domElement.innerText
+        const { IpfsHash } = await uploadToIpfs({
+            content,
+            title,
+            description,
+            location
+        })
+
+        return IpfsHash
+    }
+
+    async function publishContent() {
+        if (!address) return
+        setLoading(true)
+        const ipfs = await postToIpfs()
+        writeContract({
+            ...CONTENT_MANAGER,
+            functionName: "addContent",
+            args: [ipfs, address]
+        }, {
+            async onSettled(tx) {
+                if (!tx) return
+                const data = await publicClient.waitForTransactionReceipt({ hash: tx })
+
+                toast.success("Submission successful, please wait for the review to be approved.")
+                setLoading(false)
+
+            }
+        })
+
+    }
 
     return <div className="p-12">
         <Input type="text" placeholder="title" onChange={e => setTitle(e.target.value)} variant="bordered" />
@@ -94,7 +136,7 @@ export default function InspirationPublishPage() {
         </div>
 
         <div className="my-8 text-center">
-            <button className="btn bg-main hover:bg-main text-white" onClick={() => handleCreate()}>
+            <button className="btn bg-main hover:bg-main text-white" onClick={() => publishContent()}>
                 {
                     loading ? <span className="loading loading-spinner"></span> : 'Create'
                 }

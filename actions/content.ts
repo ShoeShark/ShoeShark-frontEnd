@@ -1,6 +1,10 @@
 'use server'
 
+import { CONTENT_MANAGER } from "contracts/ContentManager"
 import { fetchWithAuth, log } from "../utils/util"
+import { formatBlockTimestamp } from "utils/format"
+import { avalancheFuji } from "viem/chains"
+import { readContract, createConfig, http } from '@wagmi/core'
 
 const BaseUrl = process.env.NEXT_PUBLIC_SERVICE_BASE_URL
 
@@ -94,4 +98,62 @@ export const commentList = async (contentId: string) => {
     const res = await fetchWithAuth(`${BaseUrl}/content/comments/${contentId}`)
     const data = await res.json()
     return data
+}
+
+// --- fetch on chain
+
+const config = createConfig({
+    chains: [avalancheFuji],
+    transports: {
+        [avalancheFuji.id]: http(),
+    },
+})
+
+const getJsonByHash = async (hash: string) => {
+    const res = await fetch(`https://white-left-chameleon-515.mypinata.cloud/ipfs/${hash}`, {
+        cache: "force-cache"
+    })
+    const { description, title, location } = await res.json()
+
+    return {
+        description,
+        title,
+        location
+    }
+}
+export async function getContentByHash(hash: string) {
+    const [{ author, timestamp }, { description, title, location }] = await Promise.all([
+        readContract(config, {
+            ...CONTENT_MANAGER,
+            functionName: "getContentDetails",
+            args: [hash]
+        }),
+        getJsonByHash(hash)
+    ])
+
+    return {
+        accountAddress: author,
+        createdAt: formatBlockTimestamp(timestamp),
+        contentId: hash,
+        title,
+        location,
+        description
+    }
+}
+
+export async function getContentList(address?: string) {
+    const hash_list = await readContract(config, {
+        ...CONTENT_MANAGER,
+        functionName: "getAllContent"
+    })
+
+    const list = await Promise.all(
+        hash_list.map(getContentByHash)
+    )
+
+    if (address) {
+        return list.filter(item => item.accountAddress == address)
+    }
+
+    return list
 }
