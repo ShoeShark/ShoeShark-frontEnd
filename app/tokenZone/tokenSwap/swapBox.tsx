@@ -117,6 +117,10 @@ export default function SwapBox() {
                 })
                 writeContract(request, {
                     async onSettled(txHash) {
+                        if (!txHash) {
+                            setBtnLoading(false)
+                            return
+                        }
                         const tx = await publicClient.waitForTransactionReceipt(
                             { hash: txHash! }
                         )
