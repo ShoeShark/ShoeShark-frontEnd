@@ -6,6 +6,7 @@ import { useAccount, useReadContract, useWriteContract } from "wagmi";
 import { SHOESHARK_NFT } from "contracts/NFT";
 import { publicClient } from "config";
 import toast from "react-hot-toast";
+import { log } from "utils/util";
 
 export default function App() {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -16,8 +17,8 @@ export default function App() {
     async function getProof() {
         const res = await getMintRaw()
 
-        if (res.proof) {
-            setProof(res.proof)
+        if (res.data.proof) {
+            setProof(res.data.proof)
         }
     }
     const { data: isMinted } = useReadContract({
