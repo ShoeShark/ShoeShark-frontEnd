@@ -63,7 +63,14 @@ export default function InspirationListPage() {
 
     const search = async () => {
         setLoading(true)
-        const list = await getContentList()
+        let list = await getContentList()
+        if (searchOption.title) {
+            list = list.filter(item => item.title.includes(searchOption.title))
+        }
+        if (searchOption.description) {
+            list = list.filter(item => item.description.includes(searchOption.description))
+        }
+
         // const res = await contentList(searchOption)
         setList(list)
         setLoading(false)
