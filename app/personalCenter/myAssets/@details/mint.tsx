@@ -7,7 +7,7 @@ import { SHOESHARK_NFT } from "contracts/NFT";
 import { publicClient } from "config";
 import toast from "react-hot-toast";
 import { bytesToHex, fromBytes, stringToBytes, stringToHex, toBytes, toHex } from "viem";
-import { JsonRpcProvider, Wallet, Contract } from "ethers";
+
 
 export default function App() {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
