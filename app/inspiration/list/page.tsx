@@ -23,8 +23,8 @@ interface ISearchOption {
 
 const LoadingList = () => <div className="w-full ml-8 py-10 px-8 max-h-full min-h-[34rem] bg-[#fff] rounded-lg shadow-md grid grid-cols-1 md:grid-cols-2 gap-5">
     {
-        Array(10).fill("").map(() =>
-            <div className="skeleton h-64"></div>
+        Array.from({ length: 10 }, (_, i) => i).map((i) =>
+            <div className="skeleton h-64" key={i}></div>
         )
     }
 </div>
@@ -58,7 +58,7 @@ export default function InspirationListPage() {
             hash_list.map(getContentByHash)
         )
 
-        return list
+        return list.sort((p, n) => Number(n.createdAt - p.createdAt))
     }
 
     const search = async () => {
@@ -116,7 +116,7 @@ export default function InspirationListPage() {
             </div>
         </div>
 
-        <div className="shadow-[0_0_22px_2px_#F31260] transition-all fixed right-8 bottom-8 z-10 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer hover:scale-110 bg-main shadow-sm">
+        <div className="shadow-[0_0_22px_2px_#F31260] transition-all fixed right-8 bottom-8 z-10 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer hover:scale-110 bg-main">
             <Link href='/inspiration/publish' className="icon-[ic--baseline-plus] text-white text-2xl">
             </Link>
         </div>

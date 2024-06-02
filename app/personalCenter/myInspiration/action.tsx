@@ -3,9 +3,12 @@
 import { contentDelete } from 'actions/content';
 import type { PopconfirmProps } from 'antd';
 import { message, Popconfirm } from 'antd';
+import { publicClient } from 'config';
+import { CONTENT_MANAGER } from 'contracts/ContentManager';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { log } from 'utils/util';
+import { useWriteContract } from 'wagmi';
 
 export default function Action({
     contentId
@@ -13,12 +16,24 @@ export default function Action({
     contentId: string;
 }) {
     const router = useRouter()
+    const { writeContractAsync } = useWriteContract()
 
     const confirm: PopconfirmProps['onConfirm'] = async (e) => {
-        console.log(e);
-        message.success('Click on Yes');
-        const res = await contentDelete(contentId)
-        router.refresh()
+        const tx = await writeContractAsync({
+            ...CONTENT_MANAGER,
+            functionName: "deleteContent",
+            args: [contentId]
+        })
+        if (!tx) return
+        const { status } = await publicClient.waitForTransactionReceipt({ hash: tx })
+
+        if (status == "success") {
+
+            message.success('delete success');
+            router.refresh()
+        } else {
+            message.error("delete error")
+        }
     };
 
     return <>

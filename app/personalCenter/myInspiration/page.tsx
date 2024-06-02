@@ -1,7 +1,8 @@
 "use server"
-import { getContentList } from "actions/content"
+import { getContentList, getPendingTask } from "actions/content"
 import List from "./list"
 import { getCookieAddress } from "actions/token"
+import { Address } from "abitype"
 
 export default async function MyInspirationPage() {
     const address = await getCookieAddress()
@@ -10,11 +11,16 @@ export default async function MyInspirationPage() {
     //     account_address: address,
     // })
     //
-    const list = await getContentList(address)
+    const [contentList, taskList] = await Promise.all([
+        getContentList(address),
+        getPendingTask(address as Address)
+    ])
+
+    const listdata = contentList.sort((p, n) => Number(n.createdAt - p.createdAt))
 
     return <div className="bg-white p-2 rounded-lg h-full shadow-[0_0px_20px_#00000010]">
-        <span className="pl-4 font-bold">My total inspiration: {list?.length}</span>
-        <List listdata={list} />
+        <span className="pl-4 font-bold">My published inspiration: {contentList?.length}</span>
+        <List listdata={listdata} taskList={taskList} />
     </div>
 
 }

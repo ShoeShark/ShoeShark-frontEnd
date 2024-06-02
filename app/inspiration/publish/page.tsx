@@ -99,11 +99,17 @@ export default function InspirationPublishPage() {
             args: [ipfs, address]
         }, {
             async onSettled(tx) {
-                if (!tx) return
+
+                if (!tx) {
+                    toast.error("Submission failed, please try again")
+                    setLoading(false)
+                    return
+                }
                 const data = await publicClient.waitForTransactionReceipt({ hash: tx })
 
                 toast.success("Submission successful, please wait for the review to be approved.")
                 setLoading(false)
+                router.push("/personalCenter/myInspiration")
 
             }
         })

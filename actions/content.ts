@@ -1,10 +1,12 @@
 'use server'
 
 import { CONTENT_MANAGER } from "contracts/ContentManager"
+import { CONTENT_AUDITOR } from "contracts/Auditor"
 import { fetchWithAuth, log } from "../utils/util"
 import { formatBlockTimestamp } from "utils/format"
 import { avalancheFuji } from "viem/chains"
 import { readContract, createConfig, http } from '@wagmi/core'
+import { Address } from "abitype"
 
 const BaseUrl = process.env.NEXT_PUBLIC_SERVICE_BASE_URL
 
@@ -133,7 +135,7 @@ export async function getContentByHash(hash: string) {
 
     return {
         accountAddress: author,
-        createdAt: formatBlockTimestamp(timestamp),
+        createdAt: timestamp,
         contentId: hash,
         title,
         location,
@@ -156,4 +158,28 @@ export async function getContentList(address?: string) {
     }
 
     return list
+}
+
+export async function getTaskContent(id: `0x${string}`) {
+    const { hash } = await readContract(config, {
+        ...CONTENT_AUDITOR,
+        functionName: "getResult",
+        args: [id]
+    })
+    const content = await getContentByHash(hash)
+
+    return {
+        ...content,
+        isPending: true
+    }
+}
+
+export async function getPendingTask(address: Address) {
+    const task_list = await readContract(config, {
+        ...CONTENT_AUDITOR,
+        functionName: "getAllTaskByAuthor",
+        args: [address!]
+    })
+
+    return task_list
 }

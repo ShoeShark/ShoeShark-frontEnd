@@ -21,3 +21,9 @@ export const getPoints = async () => {
     const data = await res.json()
     return data
 }
+
+export const addPublishPoint = async () => {
+    const res = await fetchWithAuth(`${BaseUrl}/points/add/publish/content`)
+    const data = await res.json()
+    return data
+}
