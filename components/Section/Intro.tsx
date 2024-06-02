@@ -2,6 +2,7 @@
 
 import "./Intro.scss";
 import Background from "public/bg.png";
+import Shark from "public/shark.png";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import clsx from "clsx";
@@ -35,9 +36,9 @@ export default function Intro() {
                     src={Background}
                     alt=""
                 />
-                <img
+                <Image
                     data-atropos-offset="0"
-                    src="https://img2.imgtp.com/2024/05/29/OpH7sAXj.png"
+                    src={Shark}
                     alt=""
                 />
                 <h1 data-atropos-offset="4" className="section-intro-title">Embark On Journeys Fueled by Inspiration.</h1>
