@@ -124,16 +124,16 @@ export default function InspirationPublishPage() {
         </div>
 
         <div className="flex items-center justify-between">
-            <div className="w-1/2">
-                <WindowedSelect
-                    required
-                    placeholder="location"
-                    name="city"
-                    onChange={(item: ISelectOption) => setLocation(item.value)}
-                    options={cityList}
-                    windowThreshold={0}
-                />
-            </div>
+            {/* <div className="w-1/2"> */}
+            {/*     <WindowedSelect */}
+            {/*         required */}
+            {/*         placeholder="location" */}
+            {/*         name="city" */}
+            {/*         onChange={(item: ISelectOption) => setLocation(item.value)} */}
+            {/*         options={cityList} */}
+            {/*         windowThreshold={0} */}
+            {/*     /> */}
+            {/* </div> */}
 
             {/* <div className="w-1/2 text-right"> */}
             {/*     <Switch isSelected={isPublic} onValueChange={v => setIsPublic(v)} color="default">Is Public</Switch> */}
