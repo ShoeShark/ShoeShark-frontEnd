@@ -5,7 +5,7 @@ import SSTIcon from "components/Icons/Logo"
 import { SST, USDC, WETH } from "config/constants/token";
 import { Address, erc20Abi, formatEther } from "viem";
 import { publicClient } from "config";
-import { useAccount } from "wagmi"
+import { useAccount, useWatchContractEvent } from "wagmi"
 
 type TokenInputProps = {
     title: string
@@ -14,6 +14,7 @@ type TokenInputProps = {
     tokenVal: string
     setToken: (v: string) => void
     setAmount: (v: string) => void
+    tx?: string
 }
 
 const inOptions = [
@@ -43,7 +44,8 @@ export default function TokenInput({
     tokenVal,
     setToken,
     amountVal,
-    setAmount
+    setAmount,
+    tx
 }: TokenInputProps) {
     const account = useAccount()
     const options = type == 'in' ? inOptions : outOptions
@@ -84,10 +86,10 @@ export default function TokenInput({
     }
 
     useEffect(() => {
-        if (account.address)
+        if (account.address || tx)
             loadBalance()
 
-    }, [tokenVal, account.address])
+    }, [tokenVal, account.address, tx])
 
     function setMax() {
         setAmount(balance)

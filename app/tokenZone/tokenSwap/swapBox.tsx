@@ -22,6 +22,7 @@ export default function SwapBox() {
 
     const [btnLoading, setBtnLoading] = useState(false)
     const [btnText, setBtnText] = useState('swap')
+    const [tx, setTx] = useState("")
 
     const { writeContract } = useWriteContract()
 
@@ -124,6 +125,7 @@ export default function SwapBox() {
                         const tx = await publicClient.waitForTransactionReceipt(
                             { hash: txHash! }
                         )
+                        setTx(txHash)
                         openNotification(`Swap ${inAmount} Avax for ${outAmount} SST`, txHash!, tx.status == "success")
 
                         setBtnLoading(false)
@@ -152,6 +154,7 @@ export default function SwapBox() {
             amountVal={inAmount}
             setToken={setInToken}
             setAmount={setInAmount}
+            tx={tx}
         />
         <TokenInput
             title="Token Out"
@@ -160,6 +163,7 @@ export default function SwapBox() {
             amountVal={outAmount}
             setToken={setOutToken}
             setAmount={setOutAmount}
+            tx={tx}
         />
 
         <div className="collapse collapse-arrow mt-2 bg-[#FFFFFFBD] shadow-2xl">
