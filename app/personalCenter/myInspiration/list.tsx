@@ -67,6 +67,8 @@ export default function List({ listdata, taskList }: props) {
                     await addPublishPoint()
                     toast.success("the review passed!")
                     const list = await getListData()
+                    list.sort((p, n) => Number(n.createdAt - p.createdAt))
+
                     setContentList(list)
                     return
                 }
@@ -111,6 +113,7 @@ export default function List({ listdata, taskList }: props) {
     }, [])
 
     return <div>
+        <span className="pl-4 font-bold">My published inspiration: {contentList?.length}</span>
         <ScrollShadow className="w-full h-[calc(100vh-14rem)] px-8">
             {
                 contentList.map(data =>

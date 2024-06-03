@@ -19,7 +19,7 @@ export default async function MyInspirationPage() {
     const listdata = contentList.sort((p, n) => Number(n.createdAt - p.createdAt))
 
     return <div className="bg-white p-2 rounded-lg h-full shadow-[0_0px_20px_#00000010]">
-        <span className="pl-4 font-bold">My published inspiration: {contentList?.length}</span>
+        {/* <span className="pl-4 font-bold">My published inspiration: {contentList?.length}</span> */}
         <List listdata={listdata} taskList={taskList} />
     </div>
 
