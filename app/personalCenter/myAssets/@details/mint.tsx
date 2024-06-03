@@ -13,6 +13,7 @@ export default function App() {
     const { writeContractAsync } = useWriteContract()
     const { address } = useAccount()
     const [proof, setProof] = useState<`0x${string}`[]>([])
+    const [minting, setMinting] = useState(false)
     async function getProof() {
         const { data } = await getMintRaw()
 
@@ -27,6 +28,7 @@ export default function App() {
     })
 
     async function mint() {
+        setMinting(true)
         const tx = await writeContractAsync({
             ...SHOESHARK_NFT,
             functionName: "mintWhiteList",
@@ -38,6 +40,8 @@ export default function App() {
             if (status == "success") {
                 await refetch()
                 toast.success("mint success");
+                setMinting(false)
+                onOpenChange()
                 return
             }
         }
@@ -69,7 +73,7 @@ export default function App() {
                                 <Button color="danger" variant="light" onPress={onClose}>
                                     Close
                                 </Button>
-                                <Button color="danger" onPress={mint}>
+                                <Button disabled={minting} isLoading={minting} color="danger" onPress={mint}>
                                     Mint
                                 </Button>
                             </ModalFooter>
